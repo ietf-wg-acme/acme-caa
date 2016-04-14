@@ -20,9 +20,8 @@ Abstract
    issuance policy to CAs.  The CAA specification alone allows a domain
    to define policy with CA-level granularity.  However, the CAA
    specification also provides facilities for extension to admit more
-   granular, CA-specific policy.  This specification defines a parameter
-   for the CAA 'issue' and 'issuewild' directives allowing authorization
-   conferred by a CAA policy to be restricted to specific ACME accounts.
+   granular, CA-specific policy.  This specification defines such a
+   parameter.
 
 Status of This Memo
 
@@ -50,6 +49,7 @@ Copyright Notice
    Provisions Relating to IETF Documents
    (http://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
 
 
 
@@ -58,7 +58,6 @@ Landau                  Expires October 16, 2016                [Page 1]
 Internet-Draft                  ACME-CAA                      April 2016
 
 
-   carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
    the Trust Legal Provisions and are provided without warranty as
@@ -67,24 +66,25 @@ Internet-Draft                  ACME-CAA                      April 2016
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  Extensions to the CAA Record  . . . . . . . . . . . . . . . .   2
-     2.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   2
-     2.2.  acme-ak Parameter . . . . . . . . . . . . . . . . . . . .   2
-   3.  Security Considerations . . . . . . . . . . . . . . . . . . .   3
-     3.1.  DNSSEC  . . . . . . . . . . . . . . . . . . . . . . . . .   3
-     3.2.  Authorization Freshness . . . . . . . . . . . . . . . . .   3
-   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
-   5.  Normative References  . . . . . . . . . . . . . . . . . . . .   4
+   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   2
+   3.  Extensions to the CAA Record  . . . . . . . . . . . . . . . .   2
+     3.1.  acme-ak Parameter . . . . . . . . . . . . . . . . . . . .   2
+   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   3
+     4.1.  DNSSEC  . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     4.2.  Authorization Freshness . . . . . . . . . . . . . . . . .   3
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
+   6.  Normative References  . . . . . . . . . . . . . . . . . . . .   4
    Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .   4
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   4
 
 1.  Introduction
 
-   BLAH BLAH BLAH
+   This specification defines a parameter for the CAA 'issue' and
+   'issuewild' directives allowing authorization conferred by a CAA
+   policy to be restricted to specific ACME accounts.  The accounts are
+   identified by account key thumbprint.
 
-2.  Extensions to the CAA Record
-
-2.1.  Terminology
+2.  Terminology
 
    In this document, the key words "MUST", "MUST NOT", "REQUIRED",
    "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY",
@@ -92,7 +92,9 @@ Table of Contents
    [RFC2119] and indicate requirement levels for compliant ACME-CAA
    implementations.
 
-2.2.  acme-ak Parameter
+3.  Extensions to the CAA Record
+
+3.1.  acme-ak Parameter
 
    CAA is designed to be extensible beyond mere CA-level authorization.
    It is RECOMMENDED.
@@ -104,8 +106,6 @@ Table of Contents
 
    If an ACME server finds multiple CAA records pertaining to it (i.e.,
    having property 'issue' or 'issuewild' as applicable and a domain
-   that the ACME server recognises as its own) with different "acme-ak"
-   parameters, the ACME server MUST NOT consider the CAA record set to
 
 
 
@@ -114,6 +114,8 @@ Landau                  Expires October 16, 2016                [Page 2]
 Internet-Draft                  ACME-CAA                      April 2016
 
 
+   that the ACME server recognises as its own) with different "acme-ak"
+   parameters, the ACME server MUST NOT consider the CAA record set to
    authorize issuance unless at least one of the specified account key
    thumbprints matches the requesting ACME account key.  A property
    without an "acme-ak" parameter matches any account key.  A property
@@ -121,7 +123,7 @@ Internet-Draft                  ACME-CAA                      April 2016
    not a valid base64url string), or multiple "acme-ak" parameters is
    unsatisfiable.
 
-3.  Security Considerations
+4.  Security Considerations
 
    This specification describes an extension to the CAA record
    specification increasing the granularity at which CAA policy can be
@@ -133,7 +135,7 @@ Internet-Draft                  ACME-CAA                      April 2016
    choose to employ it, when combined with a CA which implements this
    specification.
 
-3.1.  DNSSEC
+4.1.  DNSSEC
 
    Where a domain chooses to secure its nameservers using DNSSEC, the
    authenticity of an ACME account key nomination placed in a CAA record
@@ -145,7 +147,7 @@ Internet-Draft                  ACME-CAA                      April 2016
    and successfully obtain ACME authorizations and certificates for the
    domain.
 
-3.2.  Authorization Freshness
+4.2.  Authorization Freshness
 
    The CAA specification governs the act of issuance by a CA.  The act
    of authorization as described by the ACME protocol occurs separately
@@ -163,21 +165,19 @@ Internet-Draft                  ACME-CAA                      April 2016
 
 
 
-
-
 Landau                  Expires October 16, 2016                [Page 3]
 
 Internet-Draft                  ACME-CAA                      April 2016
 
 
-4.  IANA Considerations
+5.  IANA Considerations
 
    None.  As per the CAA specification, the parameter namespace for the
    CAA 'issue' and 'issuewild' directives has CA-defined semantics.
    This document merely specifies a RECOMMENDED semantic for a parameter
    of the name "acme-ak" for ACME-based CAs.
 
-5.  Normative References
+6.  Normative References
 
    [I-D.ietf-acme-acme]
               Barnes, R., Hoffman-Andrews, J., and J. Kasten, "Automatic
@@ -208,16 +208,16 @@ Appendix A.  Examples
    account keys as authorized to issue certificates for the domain
    "example.com".  Issuance is restricted to the CA "example.net".
 
-example.com. IN CAA 0 issue "example.net; acme-ak=UKNmi2whPhuAhDvAxGa_aOZgPzyJDhhsrt-8Bt2fWh0"
-example.com. IN CAA 0 issue "example.net; acme-ak=rlp4OZPOR9MKejkOdZAKQ5Tfwce6llawmrDIh-BtNJ0"
+   example.com. IN CAA 0 issue "example.net; \
+     acme-ak=UKNmi2whPhuAhDvAxGa_aOZgPzyJDhhsrt-8Bt2fWh0"
+   example.com. IN CAA 0 issue "example.net; \
+     acme-ak=rlp4OZPOR9MKejkOdZAKQ5Tfwce6llawmrDIh-BtNJ0"
 
 Author's Address
 
    Hugo Landau
 
    Email: hlandau@devever.net
-
-
 
 
 

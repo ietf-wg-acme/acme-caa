@@ -269,14 +269,14 @@ li, p {
 
   <link href="#rfc.toc" rel="Contents"/>
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
-<link href="#rfc.section.2" rel="Chapter" title="2 Extensions to the CAA Record"/>
-<link href="#rfc.section.2.1" rel="Chapter" title="2.1 Terminology"/>
-<link href="#rfc.section.2.2" rel="Chapter" title="2.2 acme-ak Parameter"/>
-<link href="#rfc.section.3" rel="Chapter" title="3 Security Considerations"/>
-<link href="#rfc.section.3.1" rel="Chapter" title="3.1 DNSSEC"/>
-<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Authorization Freshness"/>
-<link href="#rfc.section.4" rel="Chapter" title="4 IANA Considerations"/>
-<link href="#rfc.references" rel="Chapter" title="5 Normative References"/>
+<link href="#rfc.section.2" rel="Chapter" title="2 Terminology"/>
+<link href="#rfc.section.3" rel="Chapter" title="3 Extensions to the CAA Record"/>
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 acme-ak Parameter"/>
+<link href="#rfc.section.4" rel="Chapter" title="4 Security Considerations"/>
+<link href="#rfc.section.4.1" rel="Chapter" title="4.1 DNSSEC"/>
+<link href="#rfc.section.4.2" rel="Chapter" title="4.2 Authorization Freshness"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 IANA Considerations"/>
+<link href="#rfc.references" rel="Chapter" title="6 Normative References"/>
 <link href="#rfc.appendix.A" rel="Chapter" title="A Examples"/>
 <link href="#rfc.authors" rel="Chapter"/>
 
@@ -287,8 +287,8 @@ li, p {
   <meta name="dct.creator" content="Landau, H." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-landau-acme-caa-latest" />
   <meta name="dct.issued" scheme="ISO8601" content="2016-4-14" />
-  <meta name="dct.abstract" content="The ACME protocol provides a means for hosts to automatically request and obtain X.509 certificates from certificate authorities. Certification authorities which implement ACME may also choose to implement the CAA DNS record, which allows a domain to communicate issuance policy to CAs. The CAA specification alone allows a domain to define policy with CA-level granularity.  However, the CAA specification also provides facilities for extension to admit more granular, CA-specific policy. This specification defines a parameter for the CAA &#8216;issue&#8217; and &#8216;issuewild&#8217; directives allowing authorization conferred by a CAA policy to be restricted to specific ACME accounts." />
-  <meta name="description" content="The ACME protocol provides a means for hosts to automatically request and obtain X.509 certificates from certificate authorities. Certification authorities which implement ACME may also choose to implement the CAA DNS record, which allows a domain to communicate issuance policy to CAs. The CAA specification alone allows a domain to define policy with CA-level granularity.  However, the CAA specification also provides facilities for extension to admit more granular, CA-specific policy. This specification defines a parameter for the CAA &#8216;issue&#8217; and &#8216;issuewild&#8217; directives allowing authorization conferred by a CAA policy to be restricted to specific ACME accounts." />
+  <meta name="dct.abstract" content="The ACME protocol provides a means for hosts to automatically request and obtain X.509 certificates from certificate authorities. Certification authorities which implement ACME may also choose to implement the CAA DNS record, which allows a domain to communicate issuance policy to CAs. The CAA specification alone allows a domain to define policy with CA-level granularity.  However, the CAA specification also provides facilities for extension to admit more granular, CA-specific policy. This specification defines such a parameter." />
+  <meta name="description" content="The ACME protocol provides a means for hosts to automatically request and obtain X.509 certificates from certificate authorities. Certification authorities which implement ACME may also choose to implement the CAA DNS record, which allows a domain to communicate issuance policy to CAs. The CAA specification alone allows a domain to define policy with CA-level granularity.  However, the CAA specification also provides facilities for extension to admit more granular, CA-specific policy. This specification defines such a parameter." />
 
 </head>
 
@@ -324,7 +324,7 @@ li, p {
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
 </h1>
-<p>The ACME protocol provides a means for hosts to automatically request and obtain X.509 certificates from certificate authorities. Certification authorities which implement ACME may also choose to implement the CAA DNS record, which allows a domain to communicate issuance policy to CAs. The CAA specification alone allows a domain to define policy with CA-level granularity.  However, the CAA specification also provides facilities for extension to admit more granular, CA-specific policy. This specification defines a parameter for the CAA &#8216;issue&#8217; and &#8216;issuewild&#8217; directives allowing authorization conferred by a CAA policy to be restricted to specific ACME accounts.</p>
+<p>The ACME protocol provides a means for hosts to automatically request and obtain X.509 certificates from certificate authorities. Certification authorities which implement ACME may also choose to implement the CAA DNS record, which allows a domain to communicate issuance policy to CAs. The CAA specification alone allows a domain to define policy with CA-level granularity.  However, the CAA specification also provides facilities for extension to admit more granular, CA-specific policy. This specification defines such a parameter.</p>
 <h1 id="rfc.status">
   <a href="#rfc.status">Status of This Memo</a>
 </h1>
@@ -344,39 +344,39 @@ li, p {
   <ul class="toc">
 
   	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
-<li>2.   <a href="#rfc.section.2">Extensions to the CAA Record</a></li>
-<ul><li>2.1.   <a href="#rfc.section.2.1">Terminology</a></li>
-<li>2.2.   <a href="#rfc.section.2.2">acme-ak Parameter</a></li>
-</ul><li>3.   <a href="#rfc.section.3">Security Considerations</a></li>
-<ul><li>3.1.   <a href="#rfc.section.3.1">DNSSEC</a></li>
-<li>3.2.   <a href="#rfc.section.3.2">Authorization Freshness</a></li>
-</ul><li>4.   <a href="#rfc.section.4">IANA Considerations</a></li>
-<li>5.   <a href="#rfc.references">Normative References</a></li>
+<li>2.   <a href="#rfc.section.2">Terminology</a></li>
+<li>3.   <a href="#rfc.section.3">Extensions to the CAA Record</a></li>
+<ul><li>3.1.   <a href="#rfc.section.3.1">acme-ak Parameter</a></li>
+</ul><li>4.   <a href="#rfc.section.4">Security Considerations</a></li>
+<ul><li>4.1.   <a href="#rfc.section.4.1">DNSSEC</a></li>
+<li>4.2.   <a href="#rfc.section.4.2">Authorization Freshness</a></li>
+</ul><li>5.   <a href="#rfc.section.5">IANA Considerations</a></li>
+<li>6.   <a href="#rfc.references">Normative References</a></li>
 <li>Appendix A.   <a href="#rfc.appendix.A">Examples</a></li>
 <li><a href="#rfc.authors">Author's Address</a></li>
 
 
   </ul>
 
-  <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#problems" id="problems">Introduction</a></h1>
-<p id="rfc.section.1.p.1">BLAH BLAH BLAH</p>
-<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#extensions-to-the-caa-record" id="extensions-to-the-caa-record">Extensions to the CAA Record</a></h1>
-<h1 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a> <a href="#Terminology" id="Terminology">Terminology</a></h1>
-<p id="rfc.section.2.1.p.1">In this document, the key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; are to be interpreted as described in BCP 14, RFC 2119 <a href="#RFC2119">[RFC2119]</a> and indicate requirement levels for compliant ACME-CAA implementations.</p>
-<h1 id="rfc.section.2.2"><a href="#rfc.section.2.2">2.2.</a> <a href="#acme-ak-parameter" id="acme-ak-parameter">acme-ak Parameter</a></h1>
-<p id="rfc.section.2.2.p.1">CAA is designed to be extensible beyond mere CA-level authorization. It is RECOMMENDED.</p>
-<p id="rfc.section.2.2.p.2">A CAA parameter &#8220;acme-ak&#8221; is defined for the &#8216;issue&#8217; and &#8216;issuewild&#8217; properties. The value of this parameter, if specified, MUST be the base64url <a href="#RFC4648">[RFC4648]</a> encoding (without padding) of the JWK thumbprint <a href="#RFC7517">[RFC7517]</a> of the ACME account key <a href="#I-D.ietf-acme-acme">[I-D.ietf-acme-acme]</a>.</p>
-<p id="rfc.section.2.2.p.3">If an ACME server finds multiple CAA records pertaining to it (i.e., having property &#8216;issue&#8217; or &#8216;issuewild&#8217; as applicable and a domain that the ACME server recognises as its own) with different &#8220;acme-ak&#8221; parameters, the ACME server MUST NOT consider the CAA record set to authorize issuance unless at least one of the specified account key thumbprints matches the requesting ACME account key. A property without an &#8220;acme-ak&#8221; parameter matches any account key. A property with an invalid &#8220;acme-ak&#8221; parameter (i.e. not 43 characters long or not a valid base64url string), or multiple &#8220;acme-ak&#8221; parameters is unsatisfiable.</p>
-<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
-<p id="rfc.section.3.p.1">This specification describes an extension to the CAA record specification increasing the granularity at which CAA policy can be expressed for ACME-based CAs. This allows the set of entities capable of successfully requesting issuance of certificates for a given domain to be restricted beyond that which would otherwise be possible, while still allowing issuance for specific ACME account keys. This improves the security of issuance for domains which choose to employ it, when combined with a CA which implements this specification.</p>
-<h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#dnssec" id="dnssec">DNSSEC</a></h1>
-<p id="rfc.section.3.1.p.1">Where a domain chooses to secure its nameservers using DNSSEC, the authenticity of an ACME account key nomination placed in a CAA record can be assured, providing that a CA makes all DNS resolutions via an appropriate, trusted DNSSEC-validating resolver. In this case and so long as control of nominated keys is retained, a domain is protected from the threat posed by a global adversary capable of performing man-in-the-middle attacks, which could otherwise forge DNS responses and successfully obtain ACME authorizations and certificates for the domain.</p>
-<h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#authorization-freshness" id="authorization-freshness">Authorization Freshness</a></h1>
-<p id="rfc.section.3.2.p.1">The CAA specification governs the act of issuance by a CA. The act of authorization as described by the ACME protocol occurs separately to issuance and may occur substantially prior to an issuance request. The CAA policy expressed by a domain may have changed in the meantime, creating the risk that a CA will issue certificates in a manner inconsistent with the presently published CAA policy.</p>
-<p id="rfc.section.3.2.p.2">CAs SHOULD consider adopting practices to reduce the risk of such circumstances. Possible countermeasures include issuing ACME authorizations with very limited validity periods, such as an hour, or revalidating the CAA policy for a domain at certificate issuance time.</p>
-<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
-<p id="rfc.section.4.p.1">None. As per the CAA specification, the parameter namespace for the CAA &#8216;issue&#8217; and &#8216;issuewild&#8217; directives has CA-defined semantics. This document merely specifies a RECOMMENDED semantic for a parameter of the name &#8220;acme-ak&#8221; for ACME-based CAs.</p>
-<h1 id="rfc.references"><a href="#rfc.references">5.</a> Normative References</h1>
+  <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
+<p id="rfc.section.1.p.1">This specification defines a parameter for the CAA &#8216;issue&#8217; and &#8216;issuewild&#8217; directives allowing authorization conferred by a CAA policy to be restricted to specific ACME accounts. The accounts are identified by account key thumbprint.</p>
+<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#terminology" id="terminology">Terminology</a></h1>
+<p id="rfc.section.2.p.1">In this document, the key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; are to be interpreted as described in BCP 14, RFC 2119 <a href="#RFC2119">[RFC2119]</a> and indicate requirement levels for compliant ACME-CAA implementations.</p>
+<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#extensions-to-the-caa-record" id="extensions-to-the-caa-record">Extensions to the CAA Record</a></h1>
+<h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#acme-ak-parameter" id="acme-ak-parameter">acme-ak Parameter</a></h1>
+<p id="rfc.section.3.1.p.1">CAA is designed to be extensible beyond mere CA-level authorization. It is RECOMMENDED.</p>
+<p id="rfc.section.3.1.p.2">A CAA parameter &#8220;acme-ak&#8221; is defined for the &#8216;issue&#8217; and &#8216;issuewild&#8217; properties. The value of this parameter, if specified, MUST be the base64url <a href="#RFC4648">[RFC4648]</a> encoding (without padding) of the JWK thumbprint <a href="#RFC7517">[RFC7517]</a> of the ACME account key <a href="#I-D.ietf-acme-acme">[I-D.ietf-acme-acme]</a>.</p>
+<p id="rfc.section.3.1.p.3">If an ACME server finds multiple CAA records pertaining to it (i.e., having property &#8216;issue&#8217; or &#8216;issuewild&#8217; as applicable and a domain that the ACME server recognises as its own) with different &#8220;acme-ak&#8221; parameters, the ACME server MUST NOT consider the CAA record set to authorize issuance unless at least one of the specified account key thumbprints matches the requesting ACME account key. A property without an &#8220;acme-ak&#8221; parameter matches any account key. A property with an invalid &#8220;acme-ak&#8221; parameter (i.e. not 43 characters long or not a valid base64url string), or multiple &#8220;acme-ak&#8221; parameters is unsatisfiable.</p>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
+<p id="rfc.section.4.p.1">This specification describes an extension to the CAA record specification increasing the granularity at which CAA policy can be expressed for ACME-based CAs. This allows the set of entities capable of successfully requesting issuance of certificates for a given domain to be restricted beyond that which would otherwise be possible, while still allowing issuance for specific ACME account keys. This improves the security of issuance for domains which choose to employ it, when combined with a CA which implements this specification.</p>
+<h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> <a href="#dnssec" id="dnssec">DNSSEC</a></h1>
+<p id="rfc.section.4.1.p.1">Where a domain chooses to secure its nameservers using DNSSEC, the authenticity of an ACME account key nomination placed in a CAA record can be assured, providing that a CA makes all DNS resolutions via an appropriate, trusted DNSSEC-validating resolver. In this case and so long as control of nominated keys is retained, a domain is protected from the threat posed by a global adversary capable of performing man-in-the-middle attacks, which could otherwise forge DNS responses and successfully obtain ACME authorizations and certificates for the domain.</p>
+<h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> <a href="#authorization-freshness" id="authorization-freshness">Authorization Freshness</a></h1>
+<p id="rfc.section.4.2.p.1">The CAA specification governs the act of issuance by a CA. The act of authorization as described by the ACME protocol occurs separately to issuance and may occur substantially prior to an issuance request. The CAA policy expressed by a domain may have changed in the meantime, creating the risk that a CA will issue certificates in a manner inconsistent with the presently published CAA policy.</p>
+<p id="rfc.section.4.2.p.2">CAs SHOULD consider adopting practices to reduce the risk of such circumstances. Possible countermeasures include issuing ACME authorizations with very limited validity periods, such as an hour, or revalidating the CAA policy for a domain at certificate issuance time.</p>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
+<p id="rfc.section.5.p.1">None. As per the CAA specification, the parameter namespace for the CAA &#8216;issue&#8217; and &#8216;issuewild&#8217; directives has CA-defined semantics. This document merely specifies a RECOMMENDED semantic for a parameter of the name &#8220;acme-ak&#8221; for ACME-based CAs.</p>
+<h1 id="rfc.references"><a href="#rfc.references">6.</a> Normative References</h1>
 <table>
   <tbody>
     <tr>
@@ -414,8 +414,10 @@ li, p {
 <h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> <a href="#examples" id="examples">Examples</a></h1>
 <p id="rfc.section.A.p.1">The following shows an example DNS configuration which nominates two account keys as authorized to issue certificates for the domain &#8220;example.com&#8221;. Issuance is restricted to the CA &#8220;example.net&#8221;.</p>
 <pre>
-example.com. IN CAA 0 issue "example.net; acme-ak=UKNmi2whPhuAhDvAxGa_aOZgPzyJDhhsrt-8Bt2fWh0"
-example.com. IN CAA 0 issue "example.net; acme-ak=rlp4OZPOR9MKejkOdZAKQ5Tfwce6llawmrDIh-BtNJ0"
+example.com. IN CAA 0 issue "example.net; \
+  acme-ak=UKNmi2whPhuAhDvAxGa_aOZgPzyJDhhsrt-8Bt2fWh0"
+example.com. IN CAA 0 issue "example.net; \
+  acme-ak=rlp4OZPOR9MKejkOdZAKQ5Tfwce6llawmrDIh-BtNJ0"
 </pre>
 <h1 id="rfc.authors">
   <a href="#rfc.authors">Author's Address</a>
