@@ -34,27 +34,27 @@ authorities which implement ACME may also choose to implement the CAA DNS
 record, which allows a domain to communicate issuance policy to CAs. The CAA
 specification alone allows a domain to define policy with CA-level granularity.
 However, the CAA specification also provides facilities for extension to admit
-more granular, CA-specific policy. This specification defines a parameter for
-the CAA 'issue' and 'issuewild' directives allowing authorization conferred by
-a CAA policy to be restricted to specific ACME accounts.
+more granular, CA-specific policy. This specification defines such a parameter.
 
 --- middle
 
-Introduction {#problems}
+Introduction
 ============
 
-BLAH BLAH BLAH 
+This specification defines a parameter for the CAA 'issue' and 'issuewild'
+directives allowing authorization conferred by a CAA policy to be restricted to
+specific ACME accounts. The accounts are identified by account key thumbprint.
 
-Extensions to the CAA Record
-============================
-
-Terminology {#Terminology}
------------
+Terminology
+===========
 
 In this document, the key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
 NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" are to be
 interpreted as described in BCP 14, RFC 2119 {{RFC2119}} and indicate
 requirement levels for compliant ACME-CAA implementations.
+
+Extensions to the CAA Record
+============================
 
 acme-ak Parameter
 -----------------
@@ -132,6 +132,8 @@ The following shows an example DNS configuration which nominates two account
 keys as authorized to issue certificates for the domain "example.com". Issuance
 is restricted to the CA "example.net".
 
-    example.com. IN CAA 0 issue "example.net; acme-ak=UKNmi2whPhuAhDvAxGa_aOZgPzyJDhhsrt-8Bt2fWh0"
-    example.com. IN CAA 0 issue "example.net; acme-ak=rlp4OZPOR9MKejkOdZAKQ5Tfwce6llawmrDIh-BtNJ0"
+    example.com. IN CAA 0 issue "example.net; \
+      acme-ak=UKNmi2whPhuAhDvAxGa_aOZgPzyJDhhsrt-8Bt2fWh0"
+    example.com. IN CAA 0 issue "example.net; \
+      acme-ak=rlp4OZPOR9MKejkOdZAKQ5Tfwce6llawmrDIh-BtNJ0"
 
