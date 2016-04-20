@@ -359,7 +359,7 @@ li, p {
   </ul>
 
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
-<p id="rfc.section.1.p.1">This specification defines a parameter for the CAA &#8216;issue&#8217; and &#8216;issuewild&#8217; directives allowing authorization conferred by a CAA policy to be restricted to specific ACME accounts. The accounts are identified by account key thumbprint.</p>
+<p id="rfc.section.1.p.1">This specification defines a parameter for the CAA &#8216;issue&#8217; and &#8216;issuewild&#8217; properties allowing authorization conferred by a CAA policy to be restricted to specific ACME accounts. The accounts are identified by account key thumbprint.</p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#terminology" id="terminology">Terminology</a></h1>
 <p id="rfc.section.2.p.1">In this document, the key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; are to be interpreted as described in BCP 14, RFC 2119 <a href="#RFC2119">[RFC2119]</a> and indicate requirement levels for compliant ACME-CAA implementations.</p>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#extensions-to-the-caa-record" id="extensions-to-the-caa-record">Extensions to the CAA Record</a></h1>
@@ -374,7 +374,7 @@ li, p {
 <p id="rfc.section.4.2.p.1">The CAA specification governs the act of issuance by a CA. The act of authorization as described by the ACME protocol occurs separately to issuance and may occur substantially prior to an issuance request. The CAA policy expressed by a domain may have changed in the meantime, creating the risk that a CA will issue certificates in a manner inconsistent with the presently published CAA policy.</p>
 <p id="rfc.section.4.2.p.2">CAs SHOULD consider adopting practices to reduce the risk of such circumstances. Possible countermeasures include issuing ACME authorizations with very limited validity periods, such as an hour, or revalidating the CAA policy for a domain at certificate issuance time.</p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
-<p id="rfc.section.5.p.1">None. As per the CAA specification, the parameter namespace for the CAA &#8216;issue&#8217; and &#8216;issuewild&#8217; directives has CA-defined semantics. This document merely specifies a RECOMMENDED semantic for a parameter of the name &#8220;acme-ak&#8221; for ACME-based CAs.</p>
+<p id="rfc.section.5.p.1">None. As per the CAA specification, the parameter namespace for the CAA &#8216;issue&#8217; and &#8216;issuewild&#8217; properties has CA-defined semantics. This document merely specifies a RECOMMENDED semantic for a parameter of the name &#8220;acme-ak&#8221; for ACME-based CAs.</p>
 <h1 id="rfc.references"><a href="#rfc.references">6.</a> Normative References</h1>
 <table>
   <tbody>
