@@ -96,9 +96,6 @@ Table of Contents
 
 3.1.  acme-ak Parameter
 
-   CAA is designed to be extensible beyond mere CA-level authorization.
-   It is RECOMMENDED.
-
    A CAA parameter "acme-ak" is defined for the 'issue' and 'issuewild'
    properties.  The value of this parameter, if specified, MUST be the
    base64url [RFC4648] encoding (without padding) of the JWK thumbprint
@@ -106,6 +103,9 @@ Table of Contents
 
    If an ACME server finds multiple CAA records pertaining to it (i.e.,
    having property 'issue' or 'issuewild' as applicable and a domain
+   that the ACME server recognises as its own) with different "acme-ak"
+   parameters, the ACME server MUST NOT consider the CAA record set to
+   authorize issuance unless at least one of the specified account key
 
 
 
@@ -114,9 +114,6 @@ Landau                  Expires October 16, 2016                [Page 2]
 Internet-Draft                  ACME-CAA                      April 2016
 
 
-   that the ACME server recognises as its own) with different "acme-ak"
-   parameters, the ACME server MUST NOT consider the CAA record set to
-   authorize issuance unless at least one of the specified account key
    thumbprints matches the requesting ACME account key.  A property
    without an "acme-ak" parameter matches any account key.  A property
    with an invalid "acme-ak" parameter (i.e. not 43 characters long or
@@ -161,6 +158,9 @@ Internet-Draft                  ACME-CAA                      April 2016
    authorizations with very limited validity periods, such as an hour,
    or revalidating the CAA policy for a domain at certificate issuance
    time.
+
+
+
 
 
 
