@@ -42,7 +42,7 @@ Introduction
 ============
 
 This specification defines a parameter for the CAA 'issue' and 'issuewild'
-directives allowing authorization conferred by a CAA policy to be restricted to
+properties allowing authorization conferred by a CAA policy to be restricted to
 specific ACME accounts. The accounts are identified by account key thumbprint.
 
 Terminology
@@ -116,7 +116,7 @@ IANA Considerations
 ===================
 
 None. As per the CAA specification, the parameter namespace for the CAA 'issue'
-and 'issuewild' directives has CA-defined semantics. This document merely
+and 'issuewild' properties has CA-defined semantics. This document merely
 specifies a RECOMMENDED semantic for a parameter of the name "acme-ak" for
 ACME-based CAs.
 
