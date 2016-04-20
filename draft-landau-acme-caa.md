@@ -59,9 +59,6 @@ Extensions to the CAA Record
 acme-ak Parameter
 -----------------
 
-  CAA is designed to be extensible beyond mere CA-level authorization. It is
-  RECOMMENDED.
-
 A CAA parameter "acme-ak" is defined for the 'issue' and 'issuewild'
 properties. The value of this parameter, if specified, MUST be the base64url
 {{RFC4648}} encoding (without padding) of the JWK thumbprint {{RFC7517}} of the
