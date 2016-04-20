@@ -41,9 +41,11 @@ more granular, CA-specific policy. This specification defines such a parameter.
 Introduction
 ============
 
-This specification defines a parameter for the CAA 'issue' and 'issuewild'
-properties allowing authorization conferred by a CAA policy to be restricted to
-specific ACME accounts. The accounts are identified by account key thumbprint.
+This specification defines a parameter for the 'issue' and 'issuewild'
+properties of the Certification Authority Authorization (CAA) DNS resource
+record {{RFC6844}}, allowing authorization conferred by a CAA policy to be
+restricted to specific ACME {{I-D.ietf-acme-acme}} accounts. The accounts are
+identified by account key thumbprint.
 
 Terminology
 ===========
@@ -59,10 +61,10 @@ Extensions to the CAA Record
 acme-ak Parameter
 -----------------
 
-A CAA parameter "acme-ak" is defined for the 'issue' and 'issuewild'
-properties. The value of this parameter, if specified, MUST be the base64url
-{{RFC4648}} encoding (without padding) of the JWK thumbprint {{RFC7517}} of the
-ACME account key {{I-D.ietf-acme-acme}}.
+A CAA parameter "acme-ak" is defined for the 'issue' and 'issuewild' properties
+defined by {{RFC6844}}. The value of this parameter, if specified, MUST be the
+base64url {{RFC4648}} encoding (without padding) of the JWK thumbprint
+{{RFC7517}} of the ACME account key {{I-D.ietf-acme-acme}}.
 
 If an ACME server finds multiple CAA records pertaining to it (i.e., having
 property 'issue' or 'issuewild' as applicable and a domain that the ACME server
