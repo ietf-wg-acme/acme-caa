@@ -2,7 +2,7 @@
 title: ACME Account Key Binding via CAA Records
 abbrev: ACME-CAA
 docname: draft-landau-acme-caa-latest
-date: 2016-04-14
+date: 2016-04-21
 category: info
 
 ipr: trust200902
