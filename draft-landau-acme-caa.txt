@@ -3,9 +3,9 @@
 
 
 ACME Working Group                                             H. Landau
-Internet-Draft                                            April 21, 2016
+Internet-Draft                                        September 25, 2016
 Intended status: Informational
-Expires: October 23, 2016
+Expires: March 29, 2017
 
 
                  CA Account URI Binding for CAA Records
@@ -35,7 +35,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 23, 2016.
+   This Internet-Draft will expire on March 29, 2017.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Landau                  Expires October 23, 2016                [Page 1]
+Landau                   Expires March 29, 2017                 [Page 1]
 
-Internet-Draft                   CAA-URI                      April 2016
+Internet-Draft                   CAA-URI                  September 2016
 
 
    the Trust Legal Provisions and are provided without warranty as
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Landau                  Expires October 23, 2016                [Page 2]
+Landau                   Expires March 29, 2017                 [Page 2]
 
-Internet-Draft                   CAA-URI                      April 2016
+Internet-Draft                   CAA-URI                  September 2016
 
 
    The presence of this parameter constrains the property to which it is
@@ -165,9 +165,9 @@ Internet-Draft                   CAA-URI                      April 2016
 
 
 
-Landau                  Expires October 23, 2016                [Page 3]
+Landau                   Expires March 29, 2017                 [Page 3]
 
-Internet-Draft                   CAA-URI                      April 2016
+Internet-Draft                   CAA-URI                  September 2016
 
 
 4.  Security Considerations
@@ -221,9 +221,9 @@ Internet-Draft                   CAA-URI                      April 2016
 
 
 
-Landau                  Expires October 23, 2016                [Page 4]
+Landau                   Expires March 29, 2017                 [Page 4]
 
-Internet-Draft                   CAA-URI                      April 2016
+Internet-Draft                   CAA-URI                  September 2016
 
 
    authorizations with very limited validity periods, such as an hour,
@@ -277,9 +277,9 @@ Internet-Draft                   CAA-URI                      April 2016
 
 
 
-Landau                  Expires October 23, 2016                [Page 5]
+Landau                   Expires March 29, 2017                 [Page 5]
 
-Internet-Draft                   CAA-URI                      April 2016
+Internet-Draft                   CAA-URI                  September 2016
 
 
 6.  Normative References
@@ -333,4 +333,4 @@ Author's Address
 
 
 
-Landau                  Expires October 23, 2016                [Page 6]
+Landau                   Expires March 29, 2017                 [Page 6]
