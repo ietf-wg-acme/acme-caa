@@ -2,7 +2,7 @@
 title: CA Account URI Binding for CAA Records
 abbrev: CAA-URI
 docname: draft-landau-acme-caa-latest
-date: 2016-09-25
+date: 2016-10-16
 category: info
 
 ipr: trust200902
@@ -32,18 +32,23 @@ normative:
 The CAA DNS record allows a domain to communicate issuance policy to CAs, but
 only allows a domain to define policy with CA-level granularity. However, the
 CAA specification also provides facilities for extension to admit more
-granular, CA-specific policy. This specification defines such a parameter,
-allowing specific accounts of a CA to be identified by URI.
+granular, CA-specific policy. This specification defines two such parameters,
+one allowing specific accounts of a CA to be identified by URI and one allowing
+specific methods of domain control validation as defined by the ACME protocol
+to be required.
 
 --- middle
 
 Introduction
 ============
 
-This specification defines a parameter for the 'issue' and 'issuewild'
+This specification defines two parameters for the 'issue' and 'issuewild'
 properties of the Certification Authority Authorization (CAA) DNS resource
-record {{RFC6844}}, allowing authorization conferred by a CAA policy to be
-restricted to specific accounts of a CA. The accounts are identified by URIs.
+record {{RFC6844}}. The first, 'account-uri', allows authorization conferred by
+a CAA policy to be restricted to specific accounts of a CA, which are
+identified by URIs. The second, 'acme-methods', allows the set of validation
+{{I-D.ietf-acme-acme}} methods supported by an ACME-based CA to validate domain
+control to be limited to a subset of the full set of methods which it supports.
 
 Terminology
 ===========
@@ -102,10 +107,31 @@ such URIs.
 Use without ACME
 ----------------
 
-This document specifies a general mechanism to identify entities which may
-request certificate issuance via URIs. The use of specific kinds of URI
-may be specified in future RFCs, and CAs not implementing ACME MAY assign
-and recognise their own URIs arbitrarily.
+The "account-uri" specification provides a general mechanism to identify
+entities which may request certificate issuance via URIs. The use of specific
+kinds of URI may be specified in future RFCs, and CAs not implementing ACME MAY
+assign and recognise their own URIs arbitrarily.
+
+Extensions to the CAA Record: acme-methods Parameter
+====================================================
+
+A CAA parameter "acme-methods" is also defined for the 'issue' and 'issuewild'
+properties. The value of this parameter, if specified, MUST be a
+comma-separated string of ACME challenge method names. The use of this
+parameter is specific to ACME and CAs implementing it.
+
+The presence of this parameter constrains the property to which it is attached.
+A CA MUST only consider a property with the "acme-methods" parameter to
+authorize issuance where the name of the challenge method being used is one of
+the names listed in the comma separated list.
+
+The special method value 'non-acme' is defined. Where a CA supports ACME, but
+also allows the issuance of certificates by other means, it MUST ensure that
+all of its other issuance channels recognise the 'acme-methods' parameter. For
+the purposes of validation, such non-ACME transactions shall be considered to
+have a method name of 'non-acme'. Thus, domains implementing CAA which wish to
+nominate a CA which supports issuance via both ACME and non-ACME means can
+choose whether to allow one or both.
 
 Security Considerations
 =======================
@@ -213,7 +239,30 @@ account URIs as authorized to issue certificates for the domain "example.com".
 Issuance is restricted to the CA "example.net".
 
     example.com. IN CAA 0 issue "example.net; \
-      account-uri=https://example.com/registration/1234"
+      account-uri=https://example.net/registration/1234"
     example.com. IN CAA 0 issue "example.net; \
-      account-uri=https://example.com/registration/2345"
+      account-uri=https://example.net/registration/2345"
+
+The following shows a zone file fragment which restricts the ACME methods which
+can be used; only ACME methods "dns-01" and "xyz-01" can be used.
+
+    example.com. IN CAA 0 issue "example.net; \
+      acme-methods=dns-01,xyz-01"
+
+The following shows a zone file fragment in which one account can be used to
+issue with the "dns-01" method and one account can be used to issue with the
+"http-01" method.
+
+    example.com. IN CAA 0 issue "example.net; \
+      account-uri=https://example.net/registration/1234; \
+      acme-methods=dns-01"
+    example.com. IN CAA 0 issue "example.net; \
+      account-uri=https://example.net/registration/2345; \
+      acme-methods=http-01"
+
+The following shows a zone file fragment in which only ACME method "dns-01"
+can be used, but non-ACME methods of issuance are also allowed.
+
+    example.com. IN CAA 0 issue "example.net; \
+      acme-methods=dns-01,non-acme"
 
