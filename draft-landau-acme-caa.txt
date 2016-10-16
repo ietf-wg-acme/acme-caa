@@ -174,12 +174,12 @@ Internet-Draft                   CAA-URI                  September 2016
 
    A CAA parameter "acme-methods" is also defined for the 'issue' and
    'issuewild' properties.  The value of this parameter, if specified,
-   MUST be a comma-separated string of ACME method names.  The use of
-   this parameter is specific to ACME and CAs implementing it.
+   MUST be a comma-separated string of ACME challenge method names.  The
+   use of this parameter is specific to ACME and CAs implementing it.
 
    The presence of this parameter constrains the property to which it is
    attached.  A CA MUST only consider a property with the "acme-methods"
-   parameter to authorize issuance where the name of the validation
+   parameter to authorize issuance where the name of the challenge
    method being used is one of the names listed in the comma separated
    list.
 
