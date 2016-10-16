@@ -3,9 +3,9 @@
 
 
 ACME Working Group                                             H. Landau
-Internet-Draft                                        September 25, 2016
+Internet-Draft                                          October 16, 2016
 Intended status: Informational
-Expires: March 29, 2017
+Expires: April 19, 2017
 
 
                  CA Account URI Binding for CAA Records
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 29, 2017.
+   This Internet-Draft will expire on April 19, 2017.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Landau                   Expires March 29, 2017                 [Page 1]
+Landau                   Expires April 19, 2017                 [Page 1]
 
-Internet-Draft                   CAA-URI                  September 2016
+Internet-Draft                   CAA-URI                    October 2016
 
 
    include Simplified BSD License text as described in Section 4.e of
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Landau                   Expires March 29, 2017                 [Page 2]
+Landau                   Expires April 19, 2017                 [Page 2]
 
-Internet-Draft                   CAA-URI                  September 2016
+Internet-Draft                   CAA-URI                    October 2016
 
 
    "CA account" means an object maintained by a specific CA representing
@@ -165,9 +165,9 @@ Internet-Draft                   CAA-URI                  September 2016
 
 
 
-Landau                   Expires March 29, 2017                 [Page 3]
+Landau                   Expires April 19, 2017                 [Page 3]
 
-Internet-Draft                   CAA-URI                  September 2016
+Internet-Draft                   CAA-URI                    October 2016
 
 
 4.  Extensions to the CAA Record: acme-methods Parameter
@@ -221,9 +221,9 @@ Internet-Draft                   CAA-URI                  September 2016
 
 
 
-Landau                   Expires March 29, 2017                 [Page 4]
+Landau                   Expires April 19, 2017                 [Page 4]
 
-Internet-Draft                   CAA-URI                  September 2016
+Internet-Draft                   CAA-URI                    October 2016
 
 
    Thus, CAs MUST ensure that the URIs they recognise as pertaining to a
@@ -277,9 +277,9 @@ Internet-Draft                   CAA-URI                  September 2016
 
 
 
-Landau                   Expires March 29, 2017                 [Page 5]
+Landau                   Expires April 19, 2017                 [Page 5]
 
-Internet-Draft                   CAA-URI                  September 2016
+Internet-Draft                   CAA-URI                    October 2016
 
 
    all validation attempts made by a CA, as such an attacker could
@@ -333,9 +333,9 @@ Internet-Draft                   CAA-URI                  September 2016
 
 
 
-Landau                   Expires March 29, 2017                 [Page 6]
+Landau                   Expires April 19, 2017                 [Page 6]
 
-Internet-Draft                   CAA-URI                  September 2016
+Internet-Draft                   CAA-URI                    October 2016
 
 
    [RFC6844]  Hallam-Baker, P. and R. Stradling, "DNS Certification
@@ -389,9 +389,9 @@ Appendix A.  Examples
 
 
 
-Landau                   Expires March 29, 2017                 [Page 7]
+Landau                   Expires April 19, 2017                 [Page 7]
 
-Internet-Draft                   CAA-URI                  September 2016
+Internet-Draft                   CAA-URI                    October 2016
 
 
 Author's Address
@@ -445,4 +445,4 @@ Author's Address
 
 
 
-Landau                   Expires March 29, 2017                 [Page 8]
+Landau                   Expires April 19, 2017                 [Page 8]
