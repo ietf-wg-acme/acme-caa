@@ -17,8 +17,10 @@ Abstract
    CAs, but only allows a domain to define policy with CA-level
    granularity.  However, the CAA specification also provides facilities
    for extension to admit more granular, CA-specific policy.  This
-   specification defines such a parameter, allowing specific accounts of
-   a CA to be identified by URI.
+   specification defines two such parameters, one allowing specific
+   accounts of a CA to be identified by URI and one allowing specific
+   methods of domain control validation as defined by the ACME protocol
+   to be required.
 
 Status of This Memo
 
@@ -48,8 +50,6 @@ Copyright Notice
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
-   include Simplified BSD License text as described in Section 4.e of
-
 
 
 
@@ -58,6 +58,7 @@ Landau                   Expires March 29, 2017                 [Page 1]
 Internet-Draft                   CAA-URI                  September 2016
 
 
+   include Simplified BSD License text as described in Section 4.e of
    the Trust Legal Provisions and are provided without warranty as
    described in the Simplified BSD License.
 
@@ -68,24 +69,28 @@ Table of Contents
    3.  Extensions to the CAA Record: account-uri Parameter . . . . .   2
      3.1.  Use with ACME . . . . . . . . . . . . . . . . . . . . . .   3
      3.2.  Use without ACME  . . . . . . . . . . . . . . . . . . . .   3
-   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
-     4.1.  URI Ambiguity . . . . . . . . . . . . . . . . . . . . . .   4
-     4.2.  Authorization Freshness . . . . . . . . . . . . . . . . .   4
-     4.3.  DNSSEC  . . . . . . . . . . . . . . . . . . . . . . . . .   5
-     4.4.  Use without DNSSEC  . . . . . . . . . . . . . . . . . . .   5
-     4.5.  Restrictions Supercedeable by DNS Delegation  . . . . . .   5
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
-   6.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
-   Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .   6
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   6
+   4.  Extensions to the CAA Record: acme-methods Parameter  . . . .   4
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
+     5.1.  URI Ambiguity . . . . . . . . . . . . . . . . . . . . . .   4
+     5.2.  Authorization Freshness . . . . . . . . . . . . . . . . .   5
+     5.3.  DNSSEC  . . . . . . . . . . . . . . . . . . . . . . . . .   5
+     5.4.  Use without DNSSEC  . . . . . . . . . . . . . . . . . . .   5
+     5.5.  Restrictions Supercedeable by DNS Delegation  . . . . . .   6
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
+   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
+   Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .   7
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
 
-   This specification defines a parameter for the 'issue' and
+   This specification defines two parameters for the 'issue' and
    'issuewild' properties of the Certification Authority Authorization
-   (CAA) DNS resource record [RFC6844], allowing authorization conferred
-   by a CAA policy to be restricted to specific accounts of a CA.  The
-   accounts are identified by URIs.
+   (CAA) DNS resource record [RFC6844].  The first, 'account-uri',
+   allows authorization conferred by a CAA policy to be restricted to
+   specific accounts of a CA, which are identified by URIs.  The second,
+   'acme-methods', allows the set of validation [I-D.ietf-acme-acme]
+   methods supported by an ACME-based CA to validate domain control to
+   be limited to a subset of the full set of methods which it supports.
 
 2.  Terminology
 
@@ -102,17 +107,16 @@ Table of Contents
    parameter, if specified, MUST be a URI [RFC3986] identifying a
    specific CA account.
 
-   "CA account" means an object maintained by a specific CA representing
-   a specific entity, or group of related entities, which may request
-   the issuance of certificates.
-
-
 
 
 Landau                   Expires March 29, 2017                 [Page 2]
 
 Internet-Draft                   CAA-URI                  September 2016
 
+
+   "CA account" means an object maintained by a specific CA representing
+   a specific entity, or group of related entities, which may request
+   the issuance of certificates.
 
    The presence of this parameter constrains the property to which it is
    attached.  A CA MUST only consider a property with an "account-uri"
@@ -153,15 +157,11 @@ Internet-Draft                   CAA-URI                  September 2016
 
 3.2.  Use without ACME
 
-   This document specifies a general mechanism to identify entities
-   which may request certificate issuance via URIs.  The use of specific
-   kinds of URI may be specified in future RFCs, and CAs not
-   implementing ACME MAY assign and recognise their own URIs
+   The "account-uri" specification provides a general mechanism to
+   identify entities which may request certificate issuance via URIs.
+   The use of specific kinds of URI may be specified in future RFCs, and
+   CAs not implementing ACME MAY assign and recognise their own URIs
    arbitrarily.
-
-
-
-
 
 
 
@@ -170,7 +170,29 @@ Landau                   Expires March 29, 2017                 [Page 3]
 Internet-Draft                   CAA-URI                  September 2016
 
 
-4.  Security Considerations
+4.  Extensions to the CAA Record: acme-methods Parameter
+
+   A CAA parameter "acme-methods" is also defined for the 'issue' and
+   'issuewild' properties.  The value of this parameter, if specified,
+   MUST be a comma-separated string of ACME method names.  The use of
+   this parameter is specific to ACME and CAs implementing it.
+
+   The presence of this parameter constrains the property to which it is
+   attached.  A CA MUST only consider a property with the "acme-methods"
+   parameter to authorize issuance where the name of the validation
+   method being used is one of the names listed in the comma separated
+   list.
+
+   The special method value 'non-acme' is defined.  Where a CA supports
+   ACME, but also allows the issuance of certificates by other means, it
+   MUST ensure that all of its other issuance channels recognise the
+   'acme-methods' parameter.  For the purposes of validation, such non-
+   ACME transactions shall be considered to have a method name of 'non-
+   acme'.  Thus, domains implementing CAA which wish to nominate a CA
+   which supports issuance via both ACME and non-ACME means can choose
+   whether to allow one or both.
+
+5.  Security Considerations
 
    This specification describes an extension to the CAA record
    specification increasing the granularity at which CAA policy can be
@@ -181,7 +203,7 @@ Internet-Draft                   CAA-URI                  September 2016
    security of issuance for domains which choose to employ it, when
    combined with a CA which implements this specification.
 
-4.1.  URI Ambiguity
+5.1.  URI Ambiguity
 
    Suppose that CA A recognises "a.example.com" as identifying itself,
    CA B is a subsidiary of CA A which recognises both "a.example.com"
@@ -195,6 +217,15 @@ Internet-Draft                   CAA-URI                  September 2016
    then this could be construed as identifying account number 1234 at CA
    A or at CA B.  These may be different accounts, creating ambiguity.
 
+
+
+
+
+Landau                   Expires March 29, 2017                 [Page 4]
+
+Internet-Draft                   CAA-URI                  September 2016
+
+
    Thus, CAs MUST ensure that the URIs they recognise as pertaining to a
    specific account of that CA are unique within the scope of all domain
    names which they recognise as identifying that CA for the purpose of
@@ -205,7 +236,7 @@ Internet-Draft                   CAA-URI                  September 2016
 
    "https://a.example.com/account/1234"
 
-4.2.  Authorization Freshness
+5.2.  Authorization Freshness
 
    The CAA specification governs the act of issuance by a CA.  In some
    cases, a CA may establish authorization for an account to request
@@ -218,19 +249,11 @@ Internet-Draft                   CAA-URI                  September 2016
 
    CAs SHOULD consider adopting practices to reduce the risk of such
    circumstances.  Possible countermeasures include issuing
-
-
-
-Landau                   Expires March 29, 2017                 [Page 4]
-
-Internet-Draft                   CAA-URI                  September 2016
-
-
    authorizations with very limited validity periods, such as an hour,
    or revalidating the CAA policy for a domain at certificate issuance
    time.
 
-4.3.  DNSSEC
+5.3.  DNSSEC
 
    Where a domain chooses to secure its nameservers using DNSSEC, the
    authenticity of an account URI nomination placed in a CAA record can
@@ -243,36 +266,13 @@ Internet-Draft                   CAA-URI                  September 2016
    issuance from a CA where only "domain validation" is used as the
    basis for issuance.
 
-4.4.  Use without DNSSEC
+5.4.  Use without DNSSEC
 
    Where a domain does not secure its nameservers using DNSSEC, or one
    or more of the CAs it authorizes do not perform CAA validation
    lookups using a trusted DNSSEC-validating resolver, use of the
    "account-uri" parameter does not confer additional security against
    an attacker capable of performing a man-in-the-middle attack against
-   all validation attempts made by a CA, as such an attacker could
-   simply fabricate the responses to DNS lookups for CAA records.
-
-   In this case, the "account-uri" mechanism still provides an effective
-   means of administrative control over issuance, except where control
-   over DNS is subdelegated (see below).
-
-4.5.  Restrictions Supercedeable by DNS Delegation
-
-   Because CAA records are located during validation by walking up the
-   DNS hierarchy until one or more records are found, the use of the
-   "account-uri" parameter, or any CAA policy, is not an effective way
-   to restrict or control issuance for subdomains of a domain, where
-   control over those subdomains is delegated to another party (such as
-   via DNS delegation or providing limited access to manage subdomain
-   DNS records).
-
-5.  IANA Considerations
-
-   None.  As per the CAA specification, the parameter namespace for the
-   CAA 'issue' and 'issuewild' properties has CA-defined semantics.
-   This document merely specifies a RECOMMENDED semantic for a parameter
-   of the name "account-uri".
 
 
 
@@ -282,7 +282,31 @@ Landau                   Expires March 29, 2017                 [Page 5]
 Internet-Draft                   CAA-URI                  September 2016
 
 
-6.  Normative References
+   all validation attempts made by a CA, as such an attacker could
+   simply fabricate the responses to DNS lookups for CAA records.
+
+   In this case, the "account-uri" mechanism still provides an effective
+   means of administrative control over issuance, except where control
+   over DNS is subdelegated (see below).
+
+5.5.  Restrictions Supercedeable by DNS Delegation
+
+   Because CAA records are located during validation by walking up the
+   DNS hierarchy until one or more records are found, the use of the
+   "account-uri" parameter, or any CAA policy, is not an effective way
+   to restrict or control issuance for subdomains of a domain, where
+   control over those subdomains is delegated to another party (such as
+   via DNS delegation or providing limited access to manage subdomain
+   DNS records).
+
+6.  IANA Considerations
+
+   None.  As per the CAA specification, the parameter namespace for the
+   CAA 'issue' and 'issuewild' properties has CA-defined semantics.
+   This document merely specifies a RECOMMENDED semantic for a parameter
+   of the name "account-uri".
+
+7.  Normative References
 
    [I-D.ietf-acme-acme]
               Barnes, R., Hoffman-Andrews, J., and J. Kasten, "Automatic
@@ -303,6 +327,17 @@ Internet-Draft                   CAA-URI                  September 2016
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <http://www.rfc-editor.org/info/rfc4648>.
 
+
+
+
+
+
+
+Landau                   Expires March 29, 2017                 [Page 6]
+
+Internet-Draft                   CAA-URI                  September 2016
+
+
    [RFC6844]  Hallam-Baker, P. and R. Stradling, "DNS Certification
               Authority Authorization (CAA) Resource Record", RFC 6844,
               DOI 10.17487/RFC6844, January 2013,
@@ -319,9 +354,45 @@ Appendix A.  Examples
    "example.com".  Issuance is restricted to the CA "example.net".
 
    example.com. IN CAA 0 issue "example.net; \
-     account-uri=https://example.com/registration/1234"
+     account-uri=https://example.net/registration/1234"
    example.com. IN CAA 0 issue "example.net; \
-     account-uri=https://example.com/registration/2345"
+     account-uri=https://example.net/registration/2345"
+
+   The following shows a zone file fragment which restricts the ACME
+   methods which can be used; only ACME methods "dns-01" and "xyz-01"
+   can be used.
+
+   example.com. IN CAA 0 issue "example.net; \
+     acme-methods=dns-01,xyz-01"
+
+   The following shows a zone file fragment in which one account can be
+   used to issue with the "dns-01" method and one account can be used to
+   issue with the "http-01" method.
+
+   example.com. IN CAA 0 issue "example.net; \
+     account-uri=https://example.net/registration/1234; \
+     acme-methods=dns-01"
+   example.com. IN CAA 0 issue "example.net; \
+     account-uri=https://example.net/registration/2345; \
+     acme-methods=http-01"
+
+   The following shows a zone file fragment in which only ACME method
+   "dns-01" can be used, but non-ACME methods of issuance are also
+   allowed.
+
+   example.com. IN CAA 0 issue "example.net; \
+     acme-methods=dns-01,non-acme"
+
+
+
+
+
+
+
+Landau                   Expires March 29, 2017                 [Page 7]
+
+Internet-Draft                   CAA-URI                  September 2016
+
 
 Author's Address
 
@@ -333,4 +404,45 @@ Author's Address
 
 
 
-Landau                   Expires March 29, 2017                 [Page 6]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Landau                   Expires March 29, 2017                 [Page 8]
