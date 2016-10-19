@@ -5,7 +5,7 @@
 <head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
   <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
 
-  <title>CA Account URI Binding for CAA Records</title>
+  <title>CAA Record Extensions for Account URI and ACME Method Binding</title>
 
   <style type="text/css">/*<![CDATA[*/
 @viewport {
@@ -279,7 +279,9 @@ li, p {
 <link href="#rfc.section.5.2" rel="Chapter" title="5.2 Authorization Freshness"/>
 <link href="#rfc.section.5.3" rel="Chapter" title="5.3 DNSSEC"/>
 <link href="#rfc.section.5.4" rel="Chapter" title="5.4 Use without DNSSEC"/>
-<link href="#rfc.section.5.5" rel="Chapter" title="5.5 Restrictions Supercedeable by DNS Delegation"/>
+<link href="#rfc.section.5.5" rel="Chapter" title="5.5 Restrictions Supercedable by DNS Delegation"/>
+<link href="#rfc.section.5.6" rel="Chapter" title="5.6 Restrictions Ineffective without CA Recognition"/>
+<link href="#rfc.section.5.7" rel="Chapter" title="5.7 Mandatory Consistency in CA Recognition"/>
 <link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations"/>
 <link href="#rfc.references" rel="Chapter" title="7 Normative References"/>
 <link href="#rfc.appendix.A" rel="Chapter" title="A Examples"/>
@@ -323,7 +325,7 @@ li, p {
     </tbody>
   </table>
 
-  <p class="title">CA Account URI Binding for CAA Records<br />
+  <p class="title">CAA Record Extensions for Account URI and ACME Method Binding<br />
   <span class="filename">draft-landau-acme-caa-latest</span></p>
   
   <h1 id="rfc.abstract">
@@ -359,7 +361,9 @@ li, p {
 <li>5.2.   <a href="#rfc.section.5.2">Authorization Freshness</a></li>
 <li>5.3.   <a href="#rfc.section.5.3">DNSSEC</a></li>
 <li>5.4.   <a href="#rfc.section.5.4">Use without DNSSEC</a></li>
-<li>5.5.   <a href="#rfc.section.5.5">Restrictions Supercedeable by DNS Delegation</a></li>
+<li>5.5.   <a href="#rfc.section.5.5">Restrictions Supercedable by DNS Delegation</a></li>
+<li>5.6.   <a href="#rfc.section.5.6">Restrictions Ineffective without CA Recognition</a></li>
+<li>5.7.   <a href="#rfc.section.5.7">Mandatory Consistency in CA Recognition</a></li>
 </ul><li>6.   <a href="#rfc.section.6">IANA Considerations</a></li>
 <li>7.   <a href="#rfc.references">Normative References</a></li>
 <li>Appendix A.   <a href="#rfc.appendix.A">Examples</a></li>
@@ -369,25 +373,25 @@ li, p {
   </ul>
 
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
-<p id="rfc.section.1.p.1">This specification defines two parameters for the &#8216;issue&#8217; and &#8216;issuewild&#8217; properties of the Certification Authority Authorization (CAA) DNS resource record <a href="#RFC6844">[RFC6844]</a>. The first, &#8216;account-uri&#8217;, allows authorization conferred by a CAA policy to be restricted to specific accounts of a CA, which are identified by URIs. The second, &#8216;acme-methods&#8217;, allows the set of validation <a href="#I-D.ietf-acme-acme">[I-D.ietf-acme-acme]</a> methods supported by an ACME-based CA to validate domain control to be limited to a subset of the full set of methods which it supports.</p>
+<p id="rfc.section.1.p.1">This specification defines two parameters for the &#8220;issue&#8221; and &#8220;issuewild&#8221; properties of the Certification Authority Authorization (CAA) DNS resource record <a href="#RFC6844">[RFC6844]</a>. The first, &#8220;account-uri&#8221;, allows authorization conferred by a CAA policy to be restricted to specific accounts of a CA, which are identified by URIs. The second, &#8220;acme-methods&#8221;, allows the set of validation methods supported by an ACME <a href="#I-D.ietf-acme-acme">[I-D.ietf-acme-acme]</a> based CA to validate domain control to be limited to a subset of the full set of methods which it supports.</p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#terminology" id="terminology">Terminology</a></h1>
 <p id="rfc.section.2.p.1">In this document, the key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; are to be interpreted as described in BCP 14, RFC 2119 <a href="#RFC2119">[RFC2119]</a> and indicate requirement levels for compliant CAA-URI implementations.</p>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#extensions-to-the-caa-record-account-uri-parameter" id="extensions-to-the-caa-record-account-uri-parameter">Extensions to the CAA Record: account-uri Parameter</a></h1>
-<p id="rfc.section.3.p.1">A CAA parameter &#8220;account-uri&#8221; is defined for the &#8216;issue&#8217; and &#8216;issuewild&#8217; properties defined by <a href="#RFC6844">[RFC6844]</a>. The value of this parameter, if specified, MUST be a URI <a href="#RFC3986">[RFC3986]</a> identifying a specific CA account.</p>
+<p id="rfc.section.3.p.1">A CAA parameter &#8220;account-uri&#8221; is defined for the &#8220;issue&#8221; and &#8220;issuewild&#8221; properties defined by <a href="#RFC6844">[RFC6844]</a>. The value of this parameter, if specified, MUST be a URI <a href="#RFC3986">[RFC3986]</a> identifying a specific CA account.</p>
 <p id="rfc.section.3.p.2">&#8220;CA account&#8221; means an object maintained by a specific CA representing a specific entity, or group of related entities, which may request the issuance of certificates.</p>
 <p id="rfc.section.3.p.3">The presence of this parameter constrains the property to which it is attached.  A CA MUST only consider a property with an &#8220;account-uri&#8221; parameter to authorize issuance where the URI specified is an URI that the CA recognises as identifying the account making a certificate issuance request.</p>
 <p id="rfc.section.3.p.4">If a certificate issuance request is made to a CA such that no account URI is available, because the request is made in the absence of any account or the account has no URI assigned to it, a CA MUST NOT consider any property having an &#8220;account-uri&#8221; parameter as authorizing issuance.</p>
-<p id="rfc.section.3.p.5">If an CA finds multiple CAA records pertaining to it (i.e., having property &#8216;issue&#8217; or &#8216;issuewild&#8217; as applicable and a domain that the CA recognises as its own) with different &#8220;account-uri&#8221; parameters, the CA MUST NOT consider the CAA record set to authorize issuance unless at least one of the specified account URIs identifies the account of the CA by which issuance is requested. A property without an &#8220;account-uri&#8221; parameter matches any account. A property with an invalid or unrecognised &#8220;account-uri&#8221; parameter is unsatisfiable.</p>
-<p id="rfc.section.3.p.6">The presence of an &#8220;account-uri&#8221; parameter does not replace or supercede the need to validate the domain name specified in an &#8220;issue&#8221; or &#8220;issuewild&#8221; record in the manner described in the CAA specification. CAs MUST still perform such verification. For example, a CAA property which specifies a domain name belonging to CA A and an account URI identifying an account at CA B is unsatisfiable.</p>
+<p id="rfc.section.3.p.5">If an CA finds multiple CAA records pertaining to it (i.e., having property &#8220;issue&#8221; or &#8220;issuewild&#8221; as applicable and a domain that the CA recognises as its own) with different &#8220;account-uri&#8221; parameters, the CA MUST NOT consider the CAA record set to authorize issuance unless at least one of the specified account URIs identifies the account of the CA by which issuance is requested. A property without an &#8220;account-uri&#8221; parameter matches any account. A property with an invalid or unrecognised &#8220;account-uri&#8221; parameter is unsatisfiable.</p>
+<p id="rfc.section.3.p.6">The presence of an &#8220;account-uri&#8221; parameter does not replace or supercede the need to validate the domain name specified in an &#8220;issue&#8221; or &#8220;issuewild&#8221; record in the manner described in the CAA specification. CAs MUST still perform such validation. For example, a CAA property which specifies a domain name belonging to CA A and an account URI identifying an account at CA B is unsatisfiable.</p>
 <h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#use-with-acme" id="use-with-acme">Use with ACME</a></h1>
 <p id="rfc.section.3.1.p.1">An ACME <a href="#I-D.ietf-acme-acme">[I-D.ietf-acme-acme]</a> registration object MAY be identified by setting the &#8220;account-uri&#8221; parameter to the URI of the ACME registration object.</p>
 <p id="rfc.section.3.1.p.2">Implementations of this specification which also implement ACME MUST recognise such URIs.</p>
 <h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#use-without-acme" id="use-without-acme">Use without ACME</a></h1>
 <p id="rfc.section.3.2.p.1">The &#8220;account-uri&#8221; specification provides a general mechanism to identify entities which may request certificate issuance via URIs. The use of specific kinds of URI may be specified in future RFCs, and CAs not implementing ACME MAY assign and recognise their own URIs arbitrarily.</p>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#extensions-to-the-caa-record-acme-methods-parameter" id="extensions-to-the-caa-record-acme-methods-parameter">Extensions to the CAA Record: acme-methods Parameter</a></h1>
-<p id="rfc.section.4.p.1">A CAA parameter &#8220;acme-methods&#8221; is also defined for the &#8216;issue&#8217; and &#8216;issuewild&#8217; properties. The value of this parameter, if specified, MUST be a comma-separated string of ACME challenge method names. The use of this parameter is specific to ACME and CAs implementing it.</p>
+<p id="rfc.section.4.p.1">A CAA parameter &#8220;acme-methods&#8221; is also defined for the &#8220;issue&#8221; and &#8220;issuewild&#8221; properties. The value of this parameter, if specified, MUST be a comma-separated string of ACME challenge method names. The use of this parameter is specific to ACME and CAs implementing it.</p>
 <p id="rfc.section.4.p.2">The presence of this parameter constrains the property to which it is attached.  A CA MUST only consider a property with the &#8220;acme-methods&#8221; parameter to authorize issuance where the name of the challenge method being used is one of the names listed in the comma separated list.</p>
-<p id="rfc.section.4.p.3">The special method value &#8216;non-acme&#8217; is defined. Where a CA supports ACME, but also allows the issuance of certificates by other means, it MUST ensure that all of its other issuance channels recognise the &#8216;acme-methods&#8217; parameter. For the purposes of validation, such non-ACME transactions shall be considered to have a method name of &#8216;non-acme&#8217;. Thus, domains implementing CAA which wish to nominate a CA which supports issuance via both ACME and non-ACME means can choose whether to allow one or both.</p>
+<p id="rfc.section.4.p.3">The special method value &#8220;non-acme&#8221; is defined. Where a CA supports both ACME and the &#8220;acme-methods&#8221; parameter, but also allows the issuance of certificates by other means, it MUST ensure that all of its other issuance channels recognise the &#8220;acme-methods&#8221; parameter (see section 5.7). For the purposes of validation, such non-ACME transactions shall be considered to have a method name of &#8220;non-acme&#8221;. Thus, domains implementing CAA which wish to nominate a CA which supports issuance via both ACME and non-ACME means can choose whether to allow one or both.</p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
 <p id="rfc.section.5.p.1">This specification describes an extension to the CAA record specification increasing the granularity at which CAA policy can be expressed. This allows the set of entities capable of successfully requesting issuance of certificates for a given domain to be restricted beyond that which would otherwise be possible, while still allowing issuance for specific accounts of a CA. This improves the security of issuance for domains which choose to employ it, when combined with a CA which implements this specification.</p>
 <h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#uri-ambiguity" id="uri-ambiguity">URI Ambiguity</a></h1>
@@ -412,12 +416,20 @@ li, p {
   <li>Exclusively use validation methods which rely solely on information obtained via DNSSEC, and use the &#8220;acme-methods&#8221; parameter to ensure that only such methods are used.</li>
 </ol>
 <h1 id="rfc.section.5.4"><a href="#rfc.section.5.4">5.4.</a> <a href="#use-without-dnssec" id="use-without-dnssec">Use without DNSSEC</a></h1>
-<p id="rfc.section.5.4.p.1">Where a domain does not secure its nameservers using DNSSEC, or one or more of the CAs it authorizes do not perform CAA validation lookups using a trusted DNSSEC-validating resolver, use of the &#8220;account-uri&#8221; parameter does not confer additional security against an attacker capable of performing a man-in-the-middle attack against all validation attempts made by a CA, as such an attacker could simply fabricate the responses to DNS lookups for CAA records.</p>
-<p id="rfc.section.5.4.p.2">In this case, the &#8220;account-uri&#8221; mechanism still provides an effective means of administrative control over issuance, except where control over DNS is subdelegated (see below).</p>
-<h1 id="rfc.section.5.5"><a href="#rfc.section.5.5">5.5.</a> <a href="#restrictions-supercedeable-by-dns-delegation" id="restrictions-supercedeable-by-dns-delegation">Restrictions Supercedeable by DNS Delegation</a></h1>
-<p id="rfc.section.5.5.p.1">Because CAA records are located during validation by walking up the DNS hierarchy until one or more records are found, the use of the &#8220;account-uri&#8221; parameter, or any CAA policy, is not an effective way to restrict or control issuance for subdomains of a domain, where control over those subdomains is delegated to another party (such as via DNS delegation or providing limited access to manage subdomain DNS records).</p>
+<p id="rfc.section.5.4.p.1">Where a domain does not secure its nameservers using DNSSEC, or one or more of the CAs it authorizes do not perform CAA validation lookups using a trusted DNSSEC-validating resolver, use of the &#8220;account-uri&#8221; or &#8220;acme-methods&#8221; parameters does not confer additional security against an attacker capable of performing a man-in-the-middle attack against all validation attempts made by a CA, as such an attacker could simply fabricate the responses to DNS lookups for CAA records.</p>
+<p id="rfc.section.5.4.p.2">In this case, the &#8220;account-uri&#8221; and &#8220;acme-methods&#8221; parameters still provide an effective means of administrative control over issuance, except where control over DNS is subdelegated (see below).</p>
+<h1 id="rfc.section.5.5"><a href="#rfc.section.5.5">5.5.</a> <a href="#restrictions-supercedable-by-dns-delegation" id="restrictions-supercedable-by-dns-delegation">Restrictions Supercedable by DNS Delegation</a></h1>
+<p id="rfc.section.5.5.p.1">Because CAA records are located during validation by walking up the DNS hierarchy until one or more records are found, the use of the &#8220;account-uri&#8221; and &#8220;acme-methods&#8221; parameters, or any CAA policy, is not an effective way to restrict or control issuance for subdomains of a domain, where control over those subdomains is delegated to another party (such as via DNS delegation or by providing limited access to manage subdomain DNS records).</p>
+<h1 id="rfc.section.5.6"><a href="#rfc.section.5.6">5.6.</a> <a href="#restrictions-ineffective-without-ca-recognition" id="restrictions-ineffective-without-ca-recognition">Restrictions Ineffective without CA Recognition</a></h1>
+<p id="rfc.section.5.6.p.1">The CAA parameters specified in this specification rely on their being recognised by the CA named by an &#8220;issue&#8221; or &#8220;issuewild&#8221; CAA property. As such, the parameters are not an effective means of control over issuance unless a CA&#8217;s support for the parameters is established beforehand.</p>
+<p id="rfc.section.5.6.p.2">CAs which implement this specification SHOULD make available documentation indicating as such, including explicit statements as to which parameters are supported. Domains configuring CAA records for a CA MUST NOT assume that the restrictions implied by the &#8220;account-uri&#8221; and &#8220;acme-methods&#8221; parameters are effective in the absence of explicit indication as such from that CA.</p>
+<p id="rfc.section.5.6.p.3">CAs SHOULD also document whether they implement DNSSEC validation for DNS lookups done for validation purposes, as this affects the security of the &#8220;account-uri&#8221; and &#8220;acme-methods&#8221; parameters.</p>
+<h1 id="rfc.section.5.7"><a href="#rfc.section.5.7">5.7.</a> <a href="#mandatory-consistency-in-ca-recognition" id="mandatory-consistency-in-ca-recognition">Mandatory Consistency in CA Recognition</a></h1>
+<p id="rfc.section.5.7.p.1">A CA MUST ensure that its support for the &#8220;account-uri&#8221; and &#8220;acme-methods&#8221; parameters is fully consistent for a given domain name which a CA recognises as identifying itself in a CAA &#8220;issue&#8221; or &#8220;issuewild&#8221; property. If a CA has multiple issuance systems (for example, an ACME-based issuance system and a non-ACME based issuance system, or two different issuance systems resulting from a corporate merger), it MUST ensure that all issuance systems recognise the same parameters.</p>
+<p id="rfc.section.5.7.p.2">A CA which is unable to do this MAY still implement the parameters by splitting the CA into two domain names for the purposes of CAA processing. For example, a CA &#8220;example.com&#8221; with an ACME-based issuance system and a non-ACME-based issuance system could recognise only &#8220;acme.example.com&#8221; for the former and &#8220;example.com&#8221; for the latter, and then implement support for the &#8220;account-uri&#8221; and &#8220;acme-methods&#8221; parameters for &#8220;acme.example.com&#8221; only.</p>
+<p id="rfc.section.5.7.p.3">A CA which is unable to ensure consistent processing of the &#8220;account-uri&#8221; or &#8220;acme-methods&#8221; parameters for a given CA domain name as specifiable in CAA &#8220;issue&#8221; or &#8220;issuewild&#8221; properties MUST NOT implement support for these parameters. Failure to do so will result in an implementation of these parameters which does not provide effective security.</p>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
-<p id="rfc.section.6.p.1">None. As per the CAA specification, the parameter namespace for the CAA &#8216;issue&#8217; and &#8216;issuewild&#8217; properties has CA-defined semantics. This document merely specifies a RECOMMENDED semantic for a parameter of the name &#8220;account-uri&#8221;.</p>
+<p id="rfc.section.6.p.1">None. As per the CAA specification, the parameter namespace for the CAA &#8220;issue&#8221; and &#8220;issuewild&#8221; properties has CA-defined semantics. This document merely specifies a RECOMMENDED semantic for parameters of the names &#8220;account-uri&#8221; and &#8220;acme-methods&#8221;.</p>
 <h1 id="rfc.references"><a href="#rfc.references">7.</a> Normative References</h1>
 <table>
   <tbody>
@@ -441,21 +453,9 @@ li, p {
     </tr>
     <tr>
       <td class="reference">
-        <b id="RFC4648">[RFC4648]</b>
-      </td>
-      <td class="top"><a>Josefsson, S.</a>, "<a href="http://tools.ietf.org/html/rfc4648">The Base16, Base32, and Base64 Data Encodings</a>", RFC 4648, DOI 10.17487/RFC4648, October 2006.</td>
-    </tr>
-    <tr>
-      <td class="reference">
         <b id="RFC6844">[RFC6844]</b>
       </td>
       <td class="top"><a>Hallam-Baker, P.</a> and <a>R. Stradling</a>, "<a href="http://tools.ietf.org/html/rfc6844">DNS Certification Authority Authorization (CAA) Resource Record</a>", RFC 6844, DOI 10.17487/RFC6844, January 2013.</td>
-    </tr>
-    <tr>
-      <td class="reference">
-        <b id="RFC7517">[RFC7517]</b>
-      </td>
-      <td class="top"><a>Jones, M.</a>, "<a href="http://tools.ietf.org/html/rfc7517">JSON Web Key (JWK)</a>", RFC 7517, DOI 10.17487/RFC7517, May 2015.</td>
     </tr>
   </tbody>
 </table>
@@ -472,7 +472,12 @@ example.com. IN CAA 0 issue "example.net; \
 example.com. IN CAA 0 issue "example.net; \
   acme-methods=dns-01,xyz-01"
 </pre>
-<p id="rfc.section.A.p.3">The following shows a zone file fragment in which one account can be used to issue with the &#8220;dns-01&#8221; method and one account can be used to issue with the &#8220;http-01&#8221; method.</p>
+<p id="rfc.section.A.p.3">The following shows an equivalent way of expressing the same restriction:</p>
+<pre>
+example.com. IN CAA 0 issue "example.net; acme-methods=dns-01"
+example.com. IN CAA 0 issue "example.net; acme-methods=xyz-01"
+</pre>
+<p id="rfc.section.A.p.4">The following shows a zone file fragment in which one account can be used to issue with the &#8220;dns-01&#8221; method and one account can be used to issue with the &#8220;http-01&#8221; method.</p>
 <pre>
 example.com. IN CAA 0 issue "example.net; \
   account-uri=https://example.net/registration/1234; \
@@ -481,7 +486,7 @@ example.com. IN CAA 0 issue "example.net; \
   account-uri=https://example.net/registration/2345; \
   acme-methods=http-01"
 </pre>
-<p id="rfc.section.A.p.4">The following shows a zone file fragment in which only ACME method &#8220;dns-01&#8221; can be used, but non-ACME methods of issuance are also allowed.</p>
+<p id="rfc.section.A.p.5">The following shows a zone file fragment in which only ACME method &#8220;dns-01&#8221; can be used, but non-ACME methods of issuance are also allowed.</p>
 <pre>
 example.com. IN CAA 0 issue "example.net; \
   acme-methods=dns-01,non-acme"
