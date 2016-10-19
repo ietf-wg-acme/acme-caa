@@ -2,7 +2,7 @@
 title: CA Account URI Binding for CAA Records
 abbrev: CAA-URI
 docname: draft-landau-acme-caa-latest
-date: 2016-10-16
+date: 2016-10-19
 category: info
 
 ipr: trust200902
@@ -188,14 +188,26 @@ DNSSEC
 ------
 
 Where a domain chooses to secure its nameservers using DNSSEC, the authenticity
-of an account URI nomination placed in a CAA record can be assured, providing
-that a CA makes all DNS resolutions via an appropriate, trusted
-DNSSEC-validating resolver. In this case and so long as control of the
-resources identified by the URIs is retained, a domain is protected from the
-threat posed by a global adversary capable of performing man-in-the-middle
-attacks, which could otherwise forge DNS responses and successfully secure
-certificate issuance from a CA where only "domain validation" is used as the
-basis for issuance.
+of its DNS data can be assured, providing that a CA makes all DNS resolutions
+via an appropriate, trusted DNSSEC-validating resolver. A domain can use this
+property to protect itself from the threat posed by a global adversary capable
+of performing man-in-the-middle attacks, which is not ordinarily mitigated by
+the "domain validation" model.
+
+In order to facilitate this, a CA validation process must either rely solely on
+information obtained via DNSSEC, or meaningfully bind the other parts of the
+validation transaction using material obtained via DNSSEC.
+
+The CAA parameters described in this specification can be used to ensure that
+only validation methods meeting these criteria are used. In particular, a
+domain secured via DNSSEC SHOULD either:
+
+  1. Use the "account-uri" parameter to ensure that only accounts which it
+     controls are authorized to obtain certificates, or
+
+  2. Exclusively use validation methods which rely solely on information
+     obtained via DNSSEC, and use the "acme-methods" parameter to ensure that
+     only such methods are used.
 
 Use without DNSSEC
 ------------------
