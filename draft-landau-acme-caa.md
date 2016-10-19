@@ -22,9 +22,7 @@ author:
 normative:
   RFC2119:
   RFC3986:
-  RFC4648:
   RFC6844:
-  RFC7517:
   I-D.ietf-acme-acme:
 
 --- abstract
