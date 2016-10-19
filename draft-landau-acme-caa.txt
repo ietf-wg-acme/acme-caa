@@ -3,9 +3,9 @@
 
 
 ACME Working Group                                             H. Landau
-Internet-Draft                                          October 16, 2016
+Internet-Draft                                          October 19, 2016
 Intended status: Informational
-Expires: April 19, 2017
+Expires: April 22, 2017
 
 
                  CA Account URI Binding for CAA Records
@@ -37,7 +37,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 19, 2017.
+   This Internet-Draft will expire on April 22, 2017.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Landau                   Expires April 19, 2017                 [Page 1]
+Landau                   Expires April 22, 2017                 [Page 1]
 
 Internet-Draft                   CAA-URI                    October 2016
 
@@ -74,7 +74,7 @@ Table of Contents
      5.1.  URI Ambiguity . . . . . . . . . . . . . . . . . . . . . .   4
      5.2.  Authorization Freshness . . . . . . . . . . . . . . . . .   5
      5.3.  DNSSEC  . . . . . . . . . . . . . . . . . . . . . . . . .   5
-     5.4.  Use without DNSSEC  . . . . . . . . . . . . . . . . . . .   5
+     5.4.  Use without DNSSEC  . . . . . . . . . . . . . . . . . . .   6
      5.5.  Restrictions Supercedeable by DNS Delegation  . . . . . .   6
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
    7.  Normative References  . . . . . . . . . . . . . . . . . . . .   6
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Landau                   Expires April 19, 2017                 [Page 2]
+Landau                   Expires April 22, 2017                 [Page 2]
 
 Internet-Draft                   CAA-URI                    October 2016
 
@@ -165,7 +165,7 @@ Internet-Draft                   CAA-URI                    October 2016
 
 
 
-Landau                   Expires April 19, 2017                 [Page 3]
+Landau                   Expires April 22, 2017                 [Page 3]
 
 Internet-Draft                   CAA-URI                    October 2016
 
@@ -221,7 +221,7 @@ Internet-Draft                   CAA-URI                    October 2016
 
 
 
-Landau                   Expires April 19, 2017                 [Page 4]
+Landau                   Expires April 22, 2017                 [Page 4]
 
 Internet-Draft                   CAA-URI                    October 2016
 
@@ -256,15 +256,35 @@ Internet-Draft                   CAA-URI                    October 2016
 5.3.  DNSSEC
 
    Where a domain chooses to secure its nameservers using DNSSEC, the
-   authenticity of an account URI nomination placed in a CAA record can
-   be assured, providing that a CA makes all DNS resolutions via an
-   appropriate, trusted DNSSEC-validating resolver.  In this case and so
-   long as control of the resources identified by the URIs is retained,
-   a domain is protected from the threat posed by a global adversary
-   capable of performing man-in-the-middle attacks, which could
-   otherwise forge DNS responses and successfully secure certificate
-   issuance from a CA where only "domain validation" is used as the
-   basis for issuance.
+   authenticity of its DNS data can be assured, providing that a CA
+   makes all DNS resolutions via an appropriate, trusted DNSSEC-
+   validating resolver.  A domain can use this property to protect
+   itself from the threat posed by a global adversary capable of
+   performing man-in-the-middle attacks, which is not ordinarily
+   mitigated by the "domain validation" model.
+
+   In order to facilitate this, a CA validation process must either rely
+   solely on information obtained via DNSSEC, or meaningfully bind the
+   other parts of the validation transaction using material obtained via
+   DNSSEC.
+
+   The CAA parameters described in this specification can be used to
+   ensure that only validation methods meeting these criteria are used.
+   In particular, a domain secured via DNSSEC SHOULD either:
+
+   1.  Use the "account-uri" parameter to ensure that only accounts
+       which it controls are authorized to obtain certificates, or
+
+
+
+Landau                   Expires April 22, 2017                 [Page 5]
+
+Internet-Draft                   CAA-URI                    October 2016
+
+
+   2.  Exclusively use validation methods which rely solely on
+       information obtained via DNSSEC, and use the "acme-methods"
+       parameter to ensure that only such methods are used.
 
 5.4.  Use without DNSSEC
 
@@ -273,15 +293,6 @@ Internet-Draft                   CAA-URI                    October 2016
    lookups using a trusted DNSSEC-validating resolver, use of the
    "account-uri" parameter does not confer additional security against
    an attacker capable of performing a man-in-the-middle attack against
-
-
-
-
-Landau                   Expires April 19, 2017                 [Page 5]
-
-Internet-Draft                   CAA-URI                    October 2016
-
-
    all validation attempts made by a CA, as such an attacker could
    simply fabricate the responses to DNS lookups for CAA records.
 
@@ -318,6 +329,15 @@ Internet-Draft                   CAA-URI                    October 2016
               RFC2119, March 1997,
               <http://www.rfc-editor.org/info/rfc2119>.
 
+
+
+
+
+Landau                   Expires April 22, 2017                 [Page 6]
+
+Internet-Draft                   CAA-URI                    October 2016
+
+
    [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
               Resource Identifier (URI): Generic Syntax", STD 66, RFC
               3986, DOI 10.17487/RFC3986, January 2005,
@@ -326,17 +346,6 @@ Internet-Draft                   CAA-URI                    October 2016
    [RFC4648]  Josefsson, S., "The Base16, Base32, and Base64 Data
               Encodings", RFC 4648, DOI 10.17487/RFC4648, October 2006,
               <http://www.rfc-editor.org/info/rfc4648>.
-
-
-
-
-
-
-
-Landau                   Expires April 19, 2017                 [Page 6]
-
-Internet-Draft                   CAA-URI                    October 2016
-
 
    [RFC6844]  Hallam-Baker, P. and R. Stradling, "DNS Certification
               Authority Authorization (CAA) Resource Record", RFC 6844,
@@ -376,23 +385,21 @@ Appendix A.  Examples
      account-uri=https://example.net/registration/2345; \
      acme-methods=http-01"
 
+
+
+
+
+Landau                   Expires April 22, 2017                 [Page 7]
+
+Internet-Draft                   CAA-URI                    October 2016
+
+
    The following shows a zone file fragment in which only ACME method
    "dns-01" can be used, but non-ACME methods of issuance are also
    allowed.
 
    example.com. IN CAA 0 issue "example.net; \
      acme-methods=dns-01,non-acme"
-
-
-
-
-
-
-
-Landau                   Expires April 19, 2017                 [Page 7]
-
-Internet-Draft                   CAA-URI                    October 2016
-
 
 Author's Address
 
@@ -438,11 +445,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-Landau                   Expires April 19, 2017                 [Page 8]
+Landau                   Expires April 22, 2017                 [Page 8]

@@ -291,7 +291,7 @@ li, p {
 
   <meta name="dct.creator" content="Landau, H." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-landau-acme-caa-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2016-10-16" />
+  <meta name="dct.issued" scheme="ISO8601" content="2016-10-19" />
   <meta name="dct.abstract" content="The CAA DNS record allows a domain to communicate issuance policy to CAs, but only allows a domain to define policy with CA-level granularity. However, the CAA specification also provides facilities for extension to admit more granular, CA-specific policy. This specification defines two such parameters, one allowing specific accounts of a CA to be identified by URI and one allowing specific methods of domain control validation as defined by the ACME protocol to be required." />
   <meta name="description" content="The CAA DNS record allows a domain to communicate issuance policy to CAs, but only allows a domain to define policy with CA-level granularity. However, the CAA specification also provides facilities for extension to admit more granular, CA-specific policy. This specification defines two such parameters, one allowing specific accounts of a CA to be identified by URI and one allowing specific methods of domain control validation as defined by the ACME protocol to be required." />
 
@@ -308,14 +308,14 @@ li, p {
 </tr>
 <tr>
   <td class="left">Internet-Draft</td>
-  <td class="right">October 16, 2016</td>
+  <td class="right">October 19, 2016</td>
 </tr>
 <tr>
   <td class="left">Intended status: Informational</td>
   <td class="right"></td>
 </tr>
 <tr>
-  <td class="left">Expires: April 19, 2017</td>
+  <td class="left">Expires: April 22, 2017</td>
   <td class="right"></td>
 </tr>
 
@@ -336,7 +336,7 @@ li, p {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on April 19, 2017.</p>
+<p>This Internet-Draft will expire on April 22, 2017.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -402,7 +402,15 @@ li, p {
 <p id="rfc.section.5.2.p.1">The CAA specification governs the act of issuance by a CA. In some cases, a CA may establish authorization for an account to request certificate issuance for a specific domain separately to the act of issuance itself. Such authorization may occur substantially prior to a certificate issuance request. The CAA policy expressed by a domain may have changed in the meantime, creating the risk that a CA will issue certificates in a manner inconsistent with the presently published CAA policy.</p>
 <p id="rfc.section.5.2.p.2">CAs SHOULD consider adopting practices to reduce the risk of such circumstances. Possible countermeasures include issuing authorizations with very limited validity periods, such as an hour, or revalidating the CAA policy for a domain at certificate issuance time.</p>
 <h1 id="rfc.section.5.3"><a href="#rfc.section.5.3">5.3.</a> <a href="#dnssec" id="dnssec">DNSSEC</a></h1>
-<p id="rfc.section.5.3.p.1">Where a domain chooses to secure its nameservers using DNSSEC, the authenticity of an account URI nomination placed in a CAA record can be assured, providing that a CA makes all DNS resolutions via an appropriate, trusted DNSSEC-validating resolver. In this case and so long as control of the resources identified by the URIs is retained, a domain is protected from the threat posed by a global adversary capable of performing man-in-the-middle attacks, which could otherwise forge DNS responses and successfully secure certificate issuance from a CA where only &#8220;domain validation&#8221; is used as the basis for issuance.</p>
+<p id="rfc.section.5.3.p.1">Where a domain chooses to secure its nameservers using DNSSEC, the authenticity of its DNS data can be assured, providing that a CA makes all DNS resolutions via an appropriate, trusted DNSSEC-validating resolver. A domain can use this property to protect itself from the threat posed by a global adversary capable of performing man-in-the-middle attacks, which is not ordinarily mitigated by the &#8220;domain validation&#8221; model.</p>
+<p id="rfc.section.5.3.p.2">In order to facilitate this, a CA validation process must either rely solely on information obtained via DNSSEC, or meaningfully bind the other parts of the validation transaction using material obtained via DNSSEC.</p>
+<p id="rfc.section.5.3.p.3">The CAA parameters described in this specification can be used to ensure that only validation methods meeting these criteria are used. In particular, a domain secured via DNSSEC SHOULD either:</p>
+<p/>
+
+<ol>
+  <li>Use the &#8220;account-uri&#8221; parameter to ensure that only accounts which it controls are authorized to obtain certificates, or</li>
+  <li>Exclusively use validation methods which rely solely on information obtained via DNSSEC, and use the &#8220;acme-methods&#8221; parameter to ensure that only such methods are used.</li>
+</ol>
 <h1 id="rfc.section.5.4"><a href="#rfc.section.5.4">5.4.</a> <a href="#use-without-dnssec" id="use-without-dnssec">Use without DNSSEC</a></h1>
 <p id="rfc.section.5.4.p.1">Where a domain does not secure its nameservers using DNSSEC, or one or more of the CAs it authorizes do not perform CAA validation lookups using a trusted DNSSEC-validating resolver, use of the &#8220;account-uri&#8221; parameter does not confer additional security against an attacker capable of performing a man-in-the-middle attack against all validation attempts made by a CA, as such an attacker could simply fabricate the responses to DNS lookups for CAA records.</p>
 <p id="rfc.section.5.4.p.2">In this case, the &#8220;account-uri&#8221; mechanism still provides an effective means of administrative control over issuance, except where control over DNS is subdelegated (see below).</p>
