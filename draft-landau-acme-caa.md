@@ -305,6 +305,11 @@ can be used; only ACME methods "dns-01" and "xyz-01" can be used.
     example.com. IN CAA 0 issue "example.net; \
       acme-methods=dns-01,xyz-01"
 
+The following shows an equivalent way of expressing the same restriction:
+
+    example.com. IN CAA 0 issue "example.net; acme-methods=dns-01"
+    example.com. IN CAA 0 issue "example.net; acme-methods=xyz-01"
+
 The following shows a zone file fragment in which one account can be used to
 issue with the "dns-01" method and one account can be used to issue with the
 "http-01" method.
