@@ -1,5 +1,6 @@
 ---
-title: CA Account URI Binding for CAA Records
+title: CAA Record Extensions for Account URI and ACME Method Binding
+# title: CA Account URI Binding for CAA Records
 abbrev: CAA-URI
 docname: draft-landau-acme-caa-latest
 date: 2016-10-19
@@ -40,12 +41,12 @@ to be required.
 Introduction
 ============
 
-This specification defines two parameters for the 'issue' and 'issuewild'
+This specification defines two parameters for the "issue" and "issuewild"
 properties of the Certification Authority Authorization (CAA) DNS resource
-record {{RFC6844}}. The first, 'account-uri', allows authorization conferred by
+record {{RFC6844}}. The first, "account-uri", allows authorization conferred by
 a CAA policy to be restricted to specific accounts of a CA, which are
-identified by URIs. The second, 'acme-methods', allows the set of validation
-{{I-D.ietf-acme-acme}} methods supported by an ACME-based CA to validate domain
+identified by URIs. The second, "acme-methods", allows the set of validation
+methods supported by an ACME {{I-D.ietf-acme-acme}} based CA to validate domain
 control to be limited to a subset of the full set of methods which it supports.
 
 Terminology
@@ -59,7 +60,7 @@ requirement levels for compliant CAA-URI implementations.
 Extensions to the CAA Record: account-uri Parameter
 ===================================================
 
-A CAA parameter "account-uri" is defined for the 'issue' and 'issuewild'
+A CAA parameter "account-uri" is defined for the "issue" and "issuewild"
 properties defined by {{RFC6844}}. The value of this parameter, if specified,
 MUST be a URI {{RFC3986}} identifying a specific CA account.
 
@@ -78,7 +79,7 @@ account has no URI assigned to it, a CA MUST NOT consider any property having
 an "account-uri" parameter as authorizing issuance.
 
 If an CA finds multiple CAA records pertaining to it (i.e., having property
-'issue' or 'issuewild' as applicable and a domain that the CA recognises as its
+"issue" or "issuewild" as applicable and a domain that the CA recognises as its
 own) with different "account-uri" parameters, the CA MUST NOT consider the CAA
 record set to authorize issuance unless at least one of the specified account
 URIs identifies the account of the CA by which issuance is requested. A
@@ -89,7 +90,7 @@ unsatisfiable.
 The presence of an "account-uri" parameter does not replace or supercede the
 need to validate the domain name specified in an "issue" or "issuewild" record
 in the manner described in the CAA specification. CAs MUST still perform such
-verification. For example, a CAA property which specifies a domain name
+validation. For example, a CAA property which specifies a domain name
 belonging to CA A and an account URI identifying an account at CA B is
 unsatisfiable.
 
@@ -113,7 +114,7 @@ assign and recognise their own URIs arbitrarily.
 Extensions to the CAA Record: acme-methods Parameter
 ====================================================
 
-A CAA parameter "acme-methods" is also defined for the 'issue' and 'issuewild'
+A CAA parameter "acme-methods" is also defined for the "issue" and "issuewild"
 properties. The value of this parameter, if specified, MUST be a
 comma-separated string of ACME challenge method names. The use of this
 parameter is specific to ACME and CAs implementing it.
@@ -123,13 +124,14 @@ A CA MUST only consider a property with the "acme-methods" parameter to
 authorize issuance where the name of the challenge method being used is one of
 the names listed in the comma separated list.
 
-The special method value 'non-acme' is defined. Where a CA supports ACME, but
-also allows the issuance of certificates by other means, it MUST ensure that
-all of its other issuance channels recognise the 'acme-methods' parameter. For
-the purposes of validation, such non-ACME transactions shall be considered to
-have a method name of 'non-acme'. Thus, domains implementing CAA which wish to
-nominate a CA which supports issuance via both ACME and non-ACME means can
-choose whether to allow one or both.
+The special method value "non-acme" is defined. Where a CA supports both ACME
+and the "acme-methods" parameter, but also allows the issuance of certificates
+by other means, it MUST ensure that all of its other issuance channels
+recognise the "acme-methods" parameter (see section 5.7). For the purposes of
+validation, such non-ACME transactions shall be considered to have a method
+name of "non-acme". Thus, domains implementing CAA which wish to nominate a CA
+which supports issuance via both ACME and non-ACME means can choose whether to
+allow one or both.
 
 Security Considerations
 =======================
@@ -212,32 +214,76 @@ Use without DNSSEC
 
 Where a domain does not secure its nameservers using DNSSEC, or one or more of
 the CAs it authorizes do not perform CAA validation lookups using a trusted
-DNSSEC-validating resolver, use of the "account-uri" parameter does not confer
-additional security against an attacker capable of performing a
-man-in-the-middle attack against all validation attempts made by a CA, as such
-an attacker could simply fabricate the responses to DNS lookups for CAA
-records.
+DNSSEC-validating resolver, use of the "account-uri" or "acme-methods"
+parameters does not confer additional security against an attacker capable of
+performing a man-in-the-middle attack against all validation attempts made by a
+CA, as such an attacker could simply fabricate the responses to DNS lookups for
+CAA records.
 
-In this case, the "account-uri" mechanism still provides an effective means of
-administrative control over issuance, except where control over DNS is
-subdelegated (see below).
+In this case, the "account-uri" and "acme-methods" parameters still provide an
+effective means of administrative control over issuance, except where control
+over DNS is subdelegated (see below).
 
-Restrictions Supercedeable by DNS Delegation
+Restrictions Supercedable by DNS Delegation
 --------------------------------------------
 
 Because CAA records are located during validation by walking up the DNS
-hierarchy until one or more records are found, the use of the "account-uri"
-parameter, or any CAA policy, is not an effective way to restrict or control
-issuance for subdomains of a domain, where control over those subdomains is
-delegated to another party (such as via DNS delegation or providing limited
-access to manage subdomain DNS records).
+hierarchy until one or more records are found, the use of the "account-uri" and
+"acme-methods" parameters, or any CAA policy, is not an effective way to
+restrict or control issuance for subdomains of a domain, where control over
+those subdomains is delegated to another party (such as via DNS delegation or
+by providing limited access to manage subdomain DNS records).
+
+Restrictions Ineffective without CA Recognition
+-----------------------------------------------
+
+The CAA parameters specified in this specification rely on their being
+recognised by the CA named by an "issue" or "issuewild" CAA property. As such,
+the parameters are not an effective means of control over issuance unless a
+CA's support for the parameters is established beforehand.
+
+CAs which implement this specification SHOULD make available documentation
+indicating as such, including explicit statements as to which parameters are
+supported. Domains configuring CAA records for a CA MUST NOT assume that the
+restrictions implied by the "account-uri" and "acme-methods" parameters are
+effective in the absence of explicit indication as such from that CA.
+
+CAs SHOULD also document whether they implement DNSSEC validation for DNS
+lookups done for validation purposes, as this affects the security of the
+"account-uri" and "acme-methods" parameters.
+
+Mandatory Consistency in CA Recognition
+---------------------------------------
+
+A CA MUST ensure that its support for the "account-uri" and "acme-methods"
+parameters is fully consistent for a given domain name which a CA recognises as
+identifying itself in a CAA "issue" or "issuewild" property. If a CA has
+multiple issuance systems (for example, an ACME-based issuance system and a
+non-ACME based issuance system, or two different issuance systems resulting
+from a corporate merger), it MUST ensure that all issuance systems recognise
+the same parameters.
+
+A CA which is unable to do this MAY still implement the parameters by splitting
+the CA into two domain names for the purposes of CAA processing. For example, a
+CA "example.com" with an ACME-based issuance system and a non-ACME-based
+issuance system could recognise only "acme.example.com" for the former and
+"example.com" for the latter, and then implement support for the "account-uri"
+and "acme-methods" parameters for "acme.example.com" only.
+
+A CA which is unable to ensure consistent processing of the "account-uri" or
+"acme-methods" parameters for a given CA domain name as specifiable in CAA
+"issue" or "issuewild" properties MUST NOT implement support for these
+parameters. Failure to do so will result in an implementation of these
+parameters which does not provide effective security.
+
 
 IANA Considerations
 ===================
 
-None. As per the CAA specification, the parameter namespace for the CAA 'issue'
-and 'issuewild' properties has CA-defined semantics. This document merely
-specifies a RECOMMENDED semantic for a parameter of the name "account-uri".
+None. As per the CAA specification, the parameter namespace for the CAA "issue"
+and "issuewild" properties has CA-defined semantics. This document merely
+specifies a RECOMMENDED semantic for parameters of the names "account-uri" and
+"acme-methods".
 
 --- back
 
