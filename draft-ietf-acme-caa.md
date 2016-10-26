@@ -4,7 +4,7 @@ title: CAA Record Extensions for Account URI and ACME Method Binding
 abbrev: ACME-CAA
 docname: draft-ietf-acme-caa-latest
 date: 2016-10-26
-category: info
+category: std
 
 ipr: trust200902
 area: General
