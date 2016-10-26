@@ -2,8 +2,8 @@
 
 This is the working area for the working group internet-draft, "draft-ietf-acme-caa".
 
-* [Editor's copy](https://hlandau.github.io/draft-ietf-acme-caa/)
-* [working group Draft] (https://tools.ietf.org/html/draft-ietf-acme-caa)
+* [Editor's copy](https://ietf-wg-acme.github.io/acme-caa/)
+* [Working Group Draft] (https://tools.ietf.org/html/draft-ietf-acme-caa)
 
 
 ## Building the Draft
