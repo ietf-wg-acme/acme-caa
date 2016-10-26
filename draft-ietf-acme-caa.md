@@ -1,9 +1,9 @@
 ---
 title: CAA Record Extensions for Account URI and ACME Method Binding
 # title: CA Account URI Binding for CAA Records
-abbrev: CAA-URI
-docname: draft-landau-acme-caa-latest
-date: 2016-10-19
+abbrev: ACME-CAA
+docname: draft-ietf-acme-caa-latest
+date: 2016-10-26
 category: info
 
 ipr: trust200902

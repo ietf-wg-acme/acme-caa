@@ -1,9 +1,9 @@
-# draft-landau-acme-caa
+# draft-ietf-acme-caa
 
-This is the working area for the {DRAFT_STATUS} internet-draft, "draft-landau-acme-caa".
+This is the working area for the working group internet-draft, "draft-ietf-acme-caa".
 
-* [Editor's copy](https://hlandau.github.io/draft-landau-acme-caa/)
-* [{DRAFT_STATUS} Draft] (https://tools.ietf.org/html/draft-landau-acme-caa)
+* [Editor's copy](https://hlandau.github.io/draft-ietf-acme-caa/)
+* [working group Draft] (https://tools.ietf.org/html/draft-ietf-acme-caa)
 
 
 ## Building the Draft
