@@ -4,7 +4,7 @@
 
 ACME Working Group                                             H. Landau
 Internet-Draft                                          October 26, 2016
-Intended status: Informational
+Intended status: Standards Track
 Expires: April 29, 2017
 
 
