@@ -1,9 +1,8 @@
 ---
 title: CAA Record Extensions for Account URI and ACME Method Binding
-# title: CA Account URI Binding for CAA Records
 abbrev: ACME-CAA
 docname: draft-ietf-acme-caa-latest
-date: 2017-02-04
+date: 2017-06-30
 category: std
 
 ipr: trust200902
@@ -69,9 +68,10 @@ specific entity, or group of related entities, which may request the issuance
 of certificates.
 
 The presence of this parameter constrains the property to which it is attached.
-A CA MUST only consider a property with an "account-uri" parameter to authorize
-issuance where the URI specified is an URI that the CA recognises as identifying
-the account making a certificate issuance request.
+Where a CAA property has an "account-uri" parameter, a CA MUST NOT consider
+that property to authorize issuance in the context of a given certificate
+issuance request unless the CA recognises the URI specified as identifying the
+account making that request.
 
 If a certificate issuance request is made to a CA such that no account URI is
 available, because the request is made in the absence of any account or the
