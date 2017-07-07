@@ -125,9 +125,10 @@ Extensions to the CAA Record: validation-methods Parameter
 
 A CAA parameter "validation-methods" is also defined for the "issue" and
 "issuewild" properties. The value of this parameter, if specified, MUST be a
-comma-separated list of tokens specifying validation methods.  For validation
-methods based on the ACME challenge/response framework, the token placed in
-this field MUST be the ACME challenge type (e.g., "http-01").
+comma-separated list of tokens specifying validation methods.  These tokens
+MUST be drawn from the IANA registry of identifier validation methods.  For
+validation methods based on the ACME challenge/response framework, the token
+placed in this field MUST be the ACME challenge type (e.g., "http-01").
 
 The presence of this parameter constrains the property to which it is attached.
 A CA MUST only consider a property with the "validation-methods" parameter to
@@ -140,16 +141,9 @@ that are not listed in the "validation-methods" parameter.  This avoids
 conflict between the requirements of this document and the ACME semantic that
 completing any challenge is sufficient to obtain authorization.
 
-Other specifications may define values for the "validation-methods" parameter
-that correspond to non-ACME validation methods.  To allow all non-ACME methods,
-the special method value "non-acme" is defined. Where a CA supports both ACME
-and the "validation-methods" parameter, but also allows the issuance of
-certificates by other means, it MUST ensure that all of its other issuance
-channels recognise the "validation-methods" parameter (see section 5.3). For
-the purposes of validation, such non-ACME transactions shall be considered to
-have a method name of "non-acme". Thus, domains implementing CAA which wish to
-nominate a CA which supports issuance via both ACME and non-ACME means can
-choose whether to allow one or both.
+A domain holder may wish to authorize CAs to use validation methods for which
+there is no registered identifier.  The special method value "vendor" is
+defined for this purpose.
 
 Security Considerations
 =======================
@@ -319,10 +313,21 @@ by providing limited access to manage subdomain DNS records).
 IANA Considerations
 ===================
 
-None. As per the CAA specification, the parameter namespace for the CAA "issue"
-and "issuewild" properties has CA-defined semantics. This document merely
-specifies a RECOMMENDED semantic for parameters of the names "account-uri" and
-"validation-methods".
+No IANA action is required with regard to the "account-uri" and
+"validation-methods" parameters. As per the CAA specification, the parameter
+namespace for the CAA "issue" and "issuewild" properties has CA-defined
+semantics. This document merely specifies a RECOMMENDED semantic for parameters
+of the names "account-uri" and "validation-methods".
+
+This document requests that IANA add an entry to the ACME Challenge Types
+registry of the following form:
+
+| Label      | Identifier Type | Reference |
+|:-----------|:----------------|:----------|
+| vendor     | all             | RFC XXXX  |
+
+[[ RFC EDITOR: Please replace XXXX above with the RFC number assigned to this
+document ]]
 
 --- back
 
