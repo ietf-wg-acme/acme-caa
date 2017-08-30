@@ -2,7 +2,7 @@
 title: CAA Record Extensions for Account URI and ACME Method Binding
 abbrev: ACME-CAA
 docname: draft-ietf-acme-caa-latest
-date: 2017-06-30
+date: 2017-08-30
 category: std
 
 ipr: trust200902
@@ -44,9 +44,9 @@ This specification defines two parameters for the "issue" and "issuewild"
 properties of the Certification Authority Authorization (CAA) DNS resource
 record {{RFC6844}}. The first, "account-uri", allows authorization conferred by
 a CAA policy to be restricted to specific accounts of a CA, which are
-identified by URIs. The second, "acme-methods", allows the set of validation
-methods supported by an ACME {{I-D.ietf-acme-acme}} based CA to validate domain
-control to be limited to a subset of the full set of methods which it supports.
+identified by URIs. The second, "validation-methods", allows the set of
+validation methods supported by a CA to validate domain control to be limited
+to a subset of the full set of methods which it supports.
 
 Terminology
 ===========
@@ -111,27 +111,29 @@ entities which may request certificate issuance via URIs. The use of specific
 kinds of URI may be specified in future RFCs, and CAs not implementing ACME MAY
 assign and recognise their own URIs arbitrarily.
 
-Extensions to the CAA Record: acme-methods Parameter
-====================================================
+Extensions to the CAA Record: validation-methods Parameter
+==========================================================
 
-A CAA parameter "acme-methods" is also defined for the "issue" and "issuewild"
-properties. The value of this parameter, if specified, MUST be a
-comma-separated string of ACME challenge method names. The use of this
-parameter is specific to ACME and CAs implementing it.
+A CAA parameter "validation-methods" is also defined for the "issue" and
+"issuewild" properties. The value of this parameter, if specified, MUST be a
+comma-separated string of challenge method names. Each challenge method name
+MUST be either an ACME challenge method name or a CA-assigned non-ACME
+challenge method name.
 
 The presence of this parameter constrains the property to which it is attached.
-A CA MUST only consider a property with the "acme-methods" parameter to
+A CA MUST only consider a property with the "validation-methods" parameter to
 authorize issuance where the name of the challenge method being used is one of
 the names listed in the comma-separated list.
 
-The special method value "non-acme" is defined. Where a CA supports both ACME
-and the "acme-methods" parameter, but also allows the issuance of certificates
-by other means, it MUST ensure that all of its other issuance channels
-recognise the "acme-methods" parameter (see section 5.3). For the purposes of
-validation, such non-ACME transactions shall be considered to have a method
-name of "non-acme". Thus, domains implementing CAA which wish to nominate a CA
-which supports issuance via both ACME and non-ACME means can choose whether to
-allow one or both.
+Where a CA supports both the "validation-methods" parameter and one or more
+non-ACME challenge methods, it MUST assign identifiers to those methods. These
+identifiers MUST be chosen to minimise the likelihood of conflict with any ACME
+challenge method name; it is RECOMMENDED that, at the very least, CAs avoid
+assigning identifiers ending in a hyphen and two digits ("-00").
+
+A CA SHOULD assign individual identifiers to each of its non-ACME challenge
+methods. However, if it is unable or unwilling to do so, it MAY use the
+fallback identifier of "non-acme" to identify such methods.
 
 Security Considerations
 =======================
@@ -172,17 +174,17 @@ CA's support for the parameters is established beforehand.
 CAs which implement this specification SHOULD make available documentation
 indicating as such, including explicit statements as to which parameters are
 supported. Domains configuring CAA records for a CA MUST NOT assume that the
-restrictions implied by the "account-uri" and "acme-methods" parameters are
+restrictions implied by the "account-uri" and "validation-methods" parameters are
 effective in the absence of explicit indication as such from that CA.
 
 CAs SHOULD also document whether they implement DNSSEC validation for DNS
 lookups done for validation purposes, as this affects the security of the
-"account-uri" and "acme-methods" parameters.
+"account-uri" and "validation-methods" parameters.
 
 Mandatory Consistency in CA Recognition
 ---------------------------------------
 
-A CA MUST ensure that its support for the "account-uri" and "acme-methods"
+A CA MUST ensure that its support for the "account-uri" and "validation-methods"
 parameters is fully consistent for a given domain name which a CA recognises as
 identifying itself in a CAA "issue" or "issuewild" property. If a CA has
 multiple issuance systems (for example, an ACME-based issuance system and a
@@ -195,14 +197,13 @@ the CA into two domain names for the purposes of CAA processing. For example, a
 CA "example.com" with an ACME-based issuance system and a non-ACME-based
 issuance system could recognise only "acme.example.com" for the former and
 "example.com" for the latter, and then implement support for the "account-uri"
-and "acme-methods" parameters for "acme.example.com" only.
+and "validation-methods" parameters for "acme.example.com" only.
 
 A CA which is unable to ensure consistent processing of the "account-uri" or
-"acme-methods" parameters for a given CA domain name as specifiable in CAA
+"validation-methods" parameters for a given CA domain name as specifiable in CAA
 "issue" or "issuewild" properties MUST NOT implement support for these
 parameters. Failure to do so will result in an implementation of these
 parameters which does not provide effective security.
-
 
 URI Ambiguity
 -------------
@@ -266,30 +267,30 @@ domain secured via DNSSEC SHOULD either:
      controls are authorized to obtain certificates, or
 
   2. Exclusively use validation methods which rely solely on information
-     obtained via DNSSEC, and use the "acme-methods" parameter to ensure that
-     only such methods are used.
+     obtained via DNSSEC, and use the "validation-methods" parameter to ensure
+     that only such methods are used.
 
 Use without DNSSEC
 ------------------
 
 Where a domain does not secure its nameservers using DNSSEC, or one or more of
 the CAs it authorizes do not perform CAA validation lookups using a trusted
-DNSSEC-validating resolver, use of the "account-uri" or "acme-methods"
+DNSSEC-validating resolver, use of the "account-uri" or "validation-methods"
 parameters does not confer additional security against an attacker capable of
 performing a man-in-the-middle attack against all validation attempts made by a
 CA, as such an attacker could simply fabricate the responses to DNS lookups for
 CAA records.
 
-In this case, the "account-uri" and "acme-methods" parameters still provide an
-effective means of administrative control over issuance, except where control
-over DNS is subdelegated (see below).
+In this case, the "account-uri" and "validation-methods" parameters still
+provide an effective means of administrative control over issuance, except
+where control over DNS is subdelegated (see below).
 
 Restrictions Supercedable by DNS Delegation
 -------------------------------------------
 
 Because CAA records are located during validation by walking up the DNS
 hierarchy until one or more records are found, the use of the "account-uri" and
-"acme-methods" parameters, or any CAA policy, is not an effective way to
+"validation-methods" parameters, or any CAA policy, is not an effective way to
 restrict or control issuance for subdomains of a domain, where control over
 those subdomains is delegated to another party (such as via DNS delegation or
 by providing limited access to manage subdomain DNS records).
@@ -301,7 +302,7 @@ IANA Considerations
 None. As per the CAA specification, the parameter namespace for the CAA "issue"
 and "issuewild" properties has CA-defined semantics. This document merely
 specifies a RECOMMENDED semantic for parameters of the names "account-uri" and
-"acme-methods".
+"validation-methods".
 
 --- back
 
@@ -321,12 +322,12 @@ The following shows a zone file fragment which restricts the ACME methods which
 can be used; only ACME methods "dns-01" and "xyz-01" can be used.
 
     example.com. IN CAA 0 issue "example.net; \
-      acme-methods=dns-01,xyz-01"
+      validation-methods=dns-01,xyz-01"
 
 The following shows an equivalent way of expressing the same restriction:
 
-    example.com. IN CAA 0 issue "example.net; acme-methods=dns-01"
-    example.com. IN CAA 0 issue "example.net; acme-methods=xyz-01"
+    example.com. IN CAA 0 issue "example.net; validation-methods=dns-01"
+    example.com. IN CAA 0 issue "example.net; validation-methods=xyz-01"
 
 The following shows a zone file fragment in which one account can be used to
 issue with the "dns-01" method and one account can be used to issue with the
@@ -334,14 +335,14 @@ issue with the "dns-01" method and one account can be used to issue with the
 
     example.com. IN CAA 0 issue "example.net; \
       account-uri=https://example.net/account/1234; \
-      acme-methods=dns-01"
+      validation-methods=dns-01"
     example.com. IN CAA 0 issue "example.net; \
       account-uri=https://example.net/account/2345; \
-      acme-methods=http-01"
+      validation-methods=http-01"
 
 The following shows a zone file fragment in which only ACME method "dns-01"
 can be used, but non-ACME methods of issuance are also allowed.
 
     example.com. IN CAA 0 issue "example.net; \
-      acme-methods=dns-01,non-acme"
+      validation-methods=dns-01,non-acme"
 
