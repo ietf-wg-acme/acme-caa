@@ -68,31 +68,27 @@ specific entity, or group of related entities, which may request the issuance
 of certificates.
 
 The presence of this parameter constrains the property to which it is attached.
-Where a CAA property has an "accounturi" parameter, a CA MUST NOT consider
+Where a CAA property has an "accounturi" parameter, a CA MUST only consider
 that property to authorize issuance in the context of a given certificate
-issuance request unless the CA recognises the URI specified as identifying the
+issuance request if the CA recognises the URI specified as identifying the
 account making that request.
-
-If a certificate issuance request is made to a CA such that no account URI is
-available, because the request is made in the absence of any account or the
-account has no URI assigned to it, a CA MUST NOT consider any property having
-an "accounturi" parameter as authorizing issuance.
 
 If a CA finds multiple CAA records pertaining to it (i.e., having property
 "issue" or "issuewild" as applicable and a domain that the CA recognises as its
-own) with different "accounturi" parameters, the CA MUST NOT consider the CAA
-record set to authorize issuance unless at least one of the specified account
-URIs identifies the account of the CA by which issuance is requested. A
-property without an "accounturi" parameter matches any account. A property
+own) with different "accounturi" parameters, the CA MUST consider the CAA
+record set to authorize issuance if and only if at least one of the specified
+account URIs identifies the account of the CA by which issuance is requested.
+
+A property without an "accounturi" parameter matches any account. A property
 with an invalid or unrecognised "accounturi" parameter is unsatisfiable. A
 property with multiple "accounturi" parameters is unsatisfiable.
 
 The presence of an "accounturi" parameter does not replace or supercede the
 need to validate the domain name specified in an "issue" or "issuewild" record
 in the manner described in the CAA specification. CAs MUST still perform such
-validation. For example, a CAA property which specifies a domain name
-belonging to CA A and an account URI identifying an account at CA B is
-unsatisfiable.
+validation. For example, a CAA "issue" property which specifies a domain name
+belonging to CA A and an "accounturi" parameter identifying an account at CA B
+is unsatisfiable.
 
 Use with ACME
 -------------
@@ -161,7 +157,9 @@ unchanged.
 As such, a domain which via CAA records authorizes only CAs adopting this
 specification, and which constrains its policy by means of this specification,
 remains vulnerable to unauthorized issuance by CAs which do not honour CAA
-records, or which honour them only on an advisory basis.
+records, or which honour them only on an advisory basis. Where a domain uses
+DNSSEC, it also remains vulnerable to CAs which honour CAA records but which do
+not validate CAA records by means of a trusted DNSSEC-validating resolver.
 
 Restrictions Ineffective without CA Recognition
 -----------------------------------------------
@@ -224,8 +222,7 @@ Thus, CAs MUST ensure that the URIs they recognise as pertaining to a specific
 account of that CA are unique within the scope of all domain names which they
 recognise as identifying that CA for the purpose of CAA record validation.
 
-It is RECOMMENDED that CAs satisfy this requirement by using URIs which include
-an authority:
+CAs MUST satisfy this requirement by using URIs which include an authority:
 
   "https://a.example.com/account/1234"
 
@@ -240,20 +237,20 @@ expressed by a domain may have changed in the meantime, creating the risk that
 a CA will issue certificates in a manner inconsistent with the presently
 published CAA policy.
 
-CAs SHOULD consider adopting practices to reduce the risk of such
-circumstances. Possible countermeasures include issuing authorizations with
-very limited validity periods, such as an hour, or revalidating the CAA policy
-for a domain at certificate issuance time.
+CAs SHOULD adopt practices to reduce the risk of such circumstances. Possible
+countermeasures include issuing authorizations with very limited validity
+periods, such as an hour, or revalidating the CAA policy for a domain at
+certificate issuance time.
 
-DNSSEC
-------
+Use with and without DNSSEC
+---------------------------
 
 Where a domain chooses to secure its nameservers using DNSSEC, the authenticity
-of its DNS data can be assured, providing that a CA makes all DNS resolutions
-via an appropriate, trusted DNSSEC-validating resolver. A domain can use this
-property to protect itself from the threat posed by a global adversary capable
-of performing man-in-the-middle attacks, which is not ordinarily mitigated by
-the "domain validation" model.
+of its DNS data can be assured, providing that a given CA makes all DNS
+resolutions via an appropriate, trusted DNSSEC-validating resolver. A domain
+can use this property to protect itself from the threat posed by a global
+adversary capable of performing man-in-the-middle attacks, which is not
+ordinarily mitigated by the "domain validation" model.
 
 In order to facilitate this, a CA validation process must either rely solely on
 information obtained via DNSSEC, or meaningfully bind the other parts of the
@@ -270,20 +267,26 @@ domain secured via DNSSEC SHOULD either:
      obtained via DNSSEC, and use the "validationmethods" parameter to ensure
      that only such methods are used.
 
-Use without DNSSEC
-------------------
+Use of the "accounturi" or "validationmethods" parameters does not confer
+additional security against an attacker capable of performing a
+man-in-the-middle attack against all validation attempts made by a given CA
+which is authorized by CAA where:
 
-Where a domain does not secure its nameservers using DNSSEC, or one or more of
-the CAs it authorizes do not perform CAA validation lookups using a trusted
-DNSSEC-validating resolver, use of the "accounturi" or "validationmethods"
-parameters does not confer additional security against an attacker capable of
-performing a man-in-the-middle attack against all validation attempts made by a
-CA, as such an attacker could simply fabricate the responses to DNS lookups for
-CAA records.
+  1. A domain does not secure its nameservers using DNSSEC, or
 
-In this case, the "accounturi" and "validationmethods" parameters still
+  2. That CA does not perform CAA validation using a trusted DNSSEC-validating
+     resolver.
+
+Moreover, use of the "accounturi" or "validationmethods" parameters does not
+mitigate against man-in-the-middle attacks against CAs which do not validate
+CAA records, or which do not do so using a trusted DNSSEC-validating resolver,
+regardless of whether those CAs are authorized by CAA or not; see
+{{limited-to-cas-processing-caa-records}}.
+
+In these cases, the "accounturi" and "validationmethods" parameters still
 provide an effective means of administrative control over issuance, except
 where control over DNS is subdelegated (see below).
+
 
 Restrictions Supercedable by DNS Delegation
 -------------------------------------------
@@ -294,6 +297,14 @@ hierarchy until one or more records are found, the use of the "accounturi" and
 restrict or control issuance for subdomains of a domain, where control over
 those subdomains is delegated to another party (such as via DNS delegation or
 by providing limited access to manage subdomain DNS records).
+
+
+Misconfiguration Hazards
+------------------------
+
+Because they express a restrictive security policy, misconfiguration of the
+"accounturi" or "validationmethods" parameters may result in legitimate
+issuance requests being refused.
 
 
 IANA Considerations
