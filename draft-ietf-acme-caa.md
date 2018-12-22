@@ -122,14 +122,11 @@ authorize issuance where the name of the challenge method being used is one of
 the names listed in the comma-separated list.
 
 Where a CA supports both the "validationmethods" parameter and one or more
-non-ACME challenge methods, it MUST assign identifiers to those methods. These
-identifiers MUST be chosen to minimise the likelihood of conflict with any ACME
-challenge method name; it is RECOMMENDED that, at the very least, CAs avoid
-assigning identifiers ending in a hyphen and two digits ("-00").
+non-ACME challenge methods, it MUST assign identifiers to those methods. If
+appropriate non-ACME identifiers are not present in the ACME Validation Methods
+IANA registry, the CA MUST use identifiers beginning with the string
+"nonacme-". Such identifiers have CA-specific meaning.
 
-A CA SHOULD assign individual identifiers to each of its non-ACME challenge
-methods. However, if it is unable or unwilling to do so, it MAY use the
-fallback identifier of "non-acme" to identify such methods.
 
 Security Considerations
 =======================
@@ -314,6 +311,8 @@ None. As per the CAA specification, the parameter namespace for the CAA "issue"
 and "issuewild" properties has CA-defined semantics. This document merely
 specifies a RECOMMENDED semantic for parameters of the names "accounturi" and
 "validationmethods".
+
+
 
 --- back
 
