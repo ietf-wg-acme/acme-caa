@@ -125,7 +125,7 @@ Where a CA supports both the "validationmethods" parameter and one or more
 non-ACME challenge methods, it MUST assign identifiers to those methods. If
 appropriate non-ACME identifiers are not present in the ACME Validation Methods
 IANA registry, the CA MUST use identifiers beginning with the string
-"nonacme-". Such identifiers have CA-specific meaning.
+"ca-", which are defined to have CA-specific meaning.
 
 
 Security Considerations
