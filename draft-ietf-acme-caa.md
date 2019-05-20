@@ -75,12 +75,6 @@ that property to authorize issuance in the context of a given certificate
 issuance request if the CA recognises the URI specified as identifying the
 account making that request.
 
-If a CA finds multiple CAA records pertaining to it (i.e., having property
-"issue" or "issuewild" as applicable and a domain that the CA recognises as its
-own) with different "accounturi" parameters, the CA MUST consider the CAA
-record set to authorize issuance if and only if at least one of the specified
-account URIs identifies the account of the CA by which issuance is requested.
-
 A property without an "accounturi" parameter matches any account. A property
 with an invalid or unrecognised "accounturi" parameter is unsatisfiable. A
 property with multiple "accounturi" parameters is unsatisfiable.
