@@ -54,9 +54,9 @@ Terminology
 ===========
 
 In this document, the key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
-NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" are to be
-interpreted as described in BCP 14, RFC 2119 {{RFC2119}} and indicate
-requirement levels for compliant ACME-CAA implementations.
+NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+"OPTIONAL" are to be interpreted as described in BCP 14 {{RFC2119}} {{RFC8174}}
+when, and only when, they appear in all capitals, as shown here.
 
 Extensions to the CAA Record: accounturi Parameter
 ==================================================
