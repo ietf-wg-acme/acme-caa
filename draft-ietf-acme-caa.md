@@ -346,9 +346,9 @@ issue with the "dns-01" method and one account can be used to issue with the
       accounturi=https://example.net/account/2345; \
       validationmethods=http-01"
 
-The following shows a zone file fragment in which only ACME method "dns-01"
-can be used, but non-ACME methods of issuance are also allowed.
+The following shows a zone file fragment in which only ACME method "dns-01" or
+a CA-specific method "ca-foo" can be used.
 
     example.com. IN CAA 0 issue "example.net; \
-      validationmethods=dns-01,non-acme"
+      validationmethods=dns-01,ca-foo"
 
