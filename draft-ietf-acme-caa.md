@@ -2,7 +2,7 @@
 title: CAA Record Extensions for Account URI and ACME Method Binding
 abbrev: ACME-CAA
 docname: draft-ietf-acme-caa-latest
-date: 2019-01-15
+date: 2019-05-20
 category: std
 
 ipr: trust200902
@@ -23,15 +23,17 @@ normative:
   RFC2119:
   RFC3986:
   RFC6844:
+  RFC8174:
   I-D.ietf-acme-acme:
 
 --- abstract
 
-The CAA DNS record allows a domain to communicate issuance policy to CAs, but
-only allows a domain to define policy with CA-level granularity. However, the
-CAA specification also provides facilities for extension to admit more
-granular, CA-specific policy. This specification defines two such parameters,
-one allowing specific accounts of a CA to be identified by URI and one allowing
+The Certification Authority Authorization (CAA) DNS record allows a domain to
+communicate issuance policy to Certification Authorities (CAs), but only allows
+a domain to define policy with CA-level granularity. However, the CAA
+specification also provides facilities for extension to admit more granular,
+CA-specific policy. This specification defines two such parameters, one
+allowing specific accounts of a CA to be identified by URI and one allowing
 specific methods of domain control validation as defined by the ACME protocol
 to be required.
 
