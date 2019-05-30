@@ -205,7 +205,7 @@ identifying itself.
 
 Suppose that both CA A and CA B issue account URIs of the form
 
-  "account-id:1234"
+  "urn:example:account-id:1234"
 
 If the CA domain name in a CAA record is specified as "a.example.com" then this
 could be construed as identifying account number 1234 at CA A or at CA B. These
