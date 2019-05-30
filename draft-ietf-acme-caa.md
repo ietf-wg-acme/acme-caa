@@ -320,10 +320,10 @@ IANA Considerations
 ===================
 
 None. As per the CAA specification, the parameter namespace for the CAA "issue"
-and "issuewild" properties has CA-defined semantics. This document merely
-specifies a recommended semantic for parameters of the names "accounturi" and
-"validationmethods".
-
+and "issuewild" properties has CA-defined semantics and the identifiers within
+that namespace may be freely and arbitrarily assigned by a CA. This document
+merely specifies recommended semantics for parameters of the names "accounturi"
+and "validationmethods", which CAs may choose to adopt.
 
 
 --- back
