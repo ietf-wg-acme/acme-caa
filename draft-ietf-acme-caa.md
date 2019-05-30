@@ -65,9 +65,9 @@ A CAA parameter "accounturi" is defined for the "issue" and "issuewild"
 properties defined by {{RFC6844}}. The value of this parameter, if specified,
 MUST be a URI {{RFC3986}} identifying a specific CA account.
 
-"CA account" means an object maintained by a specific CA representing a
-specific entity, or group of related entities, which may request the issuance
-of certificates.
+"CA account" means an object, maintained by a specific CA and which may request
+the issuance of certificates, which represents a specific entity or group of
+related entities.
 
 The presence of this parameter constrains the property to which it is attached.
 Where a CAA property has an "accounturi" parameter, a CA MUST only consider
@@ -193,7 +193,7 @@ and "validationmethods" parameters for "acme.example.com" only.
 A CA which is unable to ensure consistent processing of the "accounturi" or
 "validationmethods" parameters for a given CA domain name as specifiable in CAA
 "issue" or "issuewild" properties MUST NOT implement support for these
-parameters. Failure to do so will result in an implementation of these
+parameters. Failure to do so would result in an implementation of these
 parameters which does not provide effective security.
 
 URI Ambiguity
@@ -215,7 +215,8 @@ Thus, CAs MUST ensure that the URIs they recognise as pertaining to a specific
 account of that CA are unique within the scope of all domain names which they
 recognise as identifying that CA for the purpose of CAA record validation.
 
-CAs MUST satisfy this requirement by using URIs which include an authority:
+CAs SHOULD satisfy this requirement by using URIs which include an authority
+(see Section 3.2 of {{RFC3986}}):
 
   "https://a.example.com/account/1234"
 
@@ -284,19 +285,18 @@ where control over DNS is subdelegated (see below).
 Restrictions Supercedable by DNS Delegation
 -------------------------------------------
 
-Because CAA records are located during validation by walking up the DNS
-hierarchy until one or more records are found, the use of the "accounturi" and
-"validationmethods" parameters, or any CAA policy, is not an effective way to
-restrict or control issuance for subdomains of a domain, where control over
-those subdomains is delegated to another party (such as via DNS delegation or
-by providing limited access to manage subdomain DNS records).
+CAA records are located during validation by walking up the DNS hierarchy until
+one or more records are found. CAA records are therefore not an effective way
+of restricting or controlling issuance for subdomains of a domain, where
+control over those subdomains is delegated to another party (such as via DNS
+delegation or by providing limited access to manage subdomain DNS records).
 
 
 Misconfiguration Hazards
 ------------------------
 
-Because they express a restrictive security policy, misconfiguration of the
-"accounturi" or "validationmethods" parameters may result in legitimate
+Because the "accounturi" and "validationmethods" parameters express restrictive
+security policies, misconfiguration of said parameters may result in legitimate
 issuance requests being refused.
 
 
@@ -305,7 +305,7 @@ IANA Considerations
 
 None. As per the CAA specification, the parameter namespace for the CAA "issue"
 and "issuewild" properties has CA-defined semantics. This document merely
-specifies a RECOMMENDED semantic for parameters of the names "accounturi" and
+specifies a recommended semantic for parameters of the names "accounturi" and
 "validationmethods".
 
 
