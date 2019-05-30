@@ -239,12 +239,19 @@ certificate issuance time.
 Use with and without DNSSEC
 ---------------------------
 
-Where a domain chooses to secure its nameservers using DNSSEC, the authenticity
-of its DNS data can be assured, providing that a given CA makes all DNS
-resolutions via an appropriate, trusted DNSSEC-validating resolver. A domain
-can use this property to protect itself from the threat posed by a global
-adversary capable of performing man-in-the-middle attacks, which is not
-ordinarily mitigated by the "domain validation" model.
+The "domain validation" model of validation commonly used for certificate
+issuance cannot ordinarily protect against adversaries who can conduct global
+man-in-the-middle attacks against a particular domain. A global
+man-in-the-middle attack is an attack which can intercept traffic to or from a
+given domain, regardless of the origin or destination of that traffic. Such an
+adversary can intercept all validation traffic initiated by a CA and thus
+appear to have control of the given domain.
+
+Where a domain is signed using DNSSEC, the authenticity of its DNS data can be
+assured, providing that a given CA makes all DNS resolutions via a trusted
+DNSSEC-validating resolver. A domain can use this property to protect itself
+from the threat posed by an adversary capable of performing a global
+man-in-the-middle attack against that domain.
 
 In order to facilitate this, a CA validation process must either rely solely on
 information obtained via DNSSEC, or meaningfully bind the other parts of the
@@ -260,6 +267,15 @@ domain secured via DNSSEC SHOULD either:
   2. Exclusively use validation methods which rely solely on information
      obtained via DNSSEC, and use the "validationmethods" parameter to ensure
      that only such methods are used.
+
+A CA supporting the "accounturi" or "validationmethods" parameters MUST perform
+CAA validation using a trusted, DNSSEC-validating resolver.
+
+"Trusted" in this context means that the CA both trusts the resolver itself and
+ensures that the communications path between the resolver and the system
+performing CAA validation are secure. It is RECOMMENDED that a CA ensure this
+by using a DNSSEC-validating resolver running on the same machine as the system
+performing CAA validation.
 
 Use of the "accounturi" or "validationmethods" parameters does not confer
 additional security against an attacker capable of performing a
