@@ -2,7 +2,7 @@
 title: CAA Record Extensions for Account URI and ACME Method Binding
 abbrev: ACME-CAA
 docname: draft-ietf-acme-caa-latest
-date: 2019-05-20
+date: 2019-05-31
 category: std
 
 ipr: trust200902
