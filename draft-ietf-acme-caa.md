@@ -2,7 +2,7 @@
 title: CAA Record Extensions for Account URI and ACME Method Binding
 abbrev: ACME-CAA
 docname: draft-ietf-acme-caa-latest
-date: 2019-05-31
+date: 2019-06-06
 category: std
 
 ipr: trust200902
@@ -22,9 +22,10 @@ author:
 normative:
   RFC2119:
   RFC3986:
-  RFC6844:
+  RFC5234:
+  I-D.ietf-lamps-rfc6844bis:
   RFC8174:
-  I-D.ietf-acme-acme:
+  RFC8555:
 
 --- abstract
 
@@ -44,11 +45,11 @@ Introduction
 
 This specification defines two parameters for the "issue" and "issuewild"
 properties of the Certification Authority Authorization (CAA) DNS resource
-record {{RFC6844}}. The first, "accounturi", allows authorization conferred by
-a CAA policy to be restricted to specific accounts of a CA, which are
-identified by URIs. The second, "validationmethods", allows the set of
-validation methods supported by a CA to validate domain control to be limited
-to a subset of the full set of methods which it supports.
+record {{I-D.ietf-lamps-rfc6844bis}}. The first, "accounturi", allows
+authorization conferred by a CAA policy to be restricted to specific accounts
+of a CA, which are identified by URIs. The second, "validationmethods", allows
+the set of validation methods supported by a CA to validate domain control to
+be limited to a subset of the full set of methods which it supports.
 
 Terminology
 ===========
@@ -62,8 +63,9 @@ Extensions to the CAA Record: accounturi Parameter
 ==================================================
 
 A CAA parameter "accounturi" is defined for the "issue" and "issuewild"
-properties defined by {{RFC6844}}. The value of this parameter, if specified,
-MUST be a URI {{RFC3986}} identifying a specific CA account.
+properties defined by {{I-D.ietf-lamps-rfc6844bis}}. The value of this
+parameter, if specified, MUST be a URI {{RFC3986}} identifying a specific CA
+account.
 
 "CA account" means an object, maintained by a specific CA and which may request
 the issuance of certificates, which represents a specific entity or group of
@@ -72,8 +74,8 @@ related entities.
 The presence of this parameter constrains the property to which it is attached.
 Where a CAA property has an "accounturi" parameter, a CA MUST only consider
 that property to authorize issuance in the context of a given certificate
-issuance request if the CA recognises the URI specified as identifying the
-account making that request.
+issuance request if the CA recognises the URI specified in the value portion of
+that parameter as identifying the account making that request.
 
 A property without an "accounturi" parameter matches any account. A property
 with an invalid or unrecognised "accounturi" parameter is unsatisfiable. A
@@ -89,7 +91,7 @@ is unsatisfiable.
 Use with ACME
 -------------
 
-An ACME {{I-D.ietf-acme-acme}} account object MAY be identified by setting the
+An ACME {{RFC8555}} account object MAY be identified by setting the
 "accounturi" parameter to the URI of the ACME account object.
 
 Implementations of this specification which also implement ACME MUST recognise
@@ -108,21 +110,31 @@ Extensions to the CAA Record: validationmethods Parameter
 
 A CAA parameter "validationmethods" is also defined for the "issue" and
 "issuewild" properties. The value of this parameter, if specified, MUST be a
-comma-separated string of challenge method names. Each challenge method name
-MUST be either an ACME challenge method name or a CA-assigned non-ACME
-challenge method name.
+comma-separated string of validation method labels.
+
+A validation method label identifies a validation method. A validation method
+is a particular way in which a CA can validate control over a domain.
 
 The presence of this parameter constrains the property to which it is attached.
 A CA MUST only consider a property with the "validationmethods" parameter to
-authorize issuance where the name of the challenge method being used is one of
-the names listed in the comma-separated list.
+authorize issuance where the validation method being used is identified by one
+of the validation method labels listed in the comma-separated list.
+
+Each validation method label MUST be either the label of a method defined in
+the ACME Validation Methods IANA registry, or a CA-specific non-ACME validation
+method label as defined below.
 
 Where a CA supports both the "validationmethods" parameter and one or more
-non-ACME challenge methods, it MUST assign identifiers to those methods. If
-appropriate non-ACME identifiers are not present in the ACME Validation Methods
-IANA registry, the CA MUST use identifiers beginning with the string
-"ca-", which are defined to have CA-specific meaning.
+non-ACME validation methods, it MUST assign labels to those methods. If
+appropriate non-ACME labels are not present in the ACME Validation Methods IANA
+registry, the CA MUST use labels beginning with the string "ca-", which are
+defined to have CA-specific meaning.
 
+The value of the "validationmethods" parameter MUST comply with the following
+ABNF {{RFC5234}}:
+
+    value = [*(label ",") label]
+    label = 1*(ALPHA / DIGIT / "-")
 
 Security Considerations
 =======================
@@ -314,6 +326,18 @@ Misconfiguration Hazards
 Because the "accounturi" and "validationmethods" parameters express restrictive
 security policies, misconfiguration of said parameters may result in legitimate
 issuance requests being refused.
+
+
+Revelation of Account URIs
+--------------------------
+
+Because CAA records are publically accessible, use of the "accounturi"
+parameter enables third parties to observe the authorized account URIs for a
+domain. This may allow third parties to identify a correlation between domains
+if those domains use the same account URIs.
+
+CAs MUST select and process account URIs under the assumption that
+untrusted third parties may learn of them.
 
 
 IANA Considerations
