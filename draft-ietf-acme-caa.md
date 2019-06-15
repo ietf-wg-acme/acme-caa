@@ -169,10 +169,13 @@ not validate CAA records by means of a trusted DNSSEC-validating resolver.
 Restrictions Ineffective without CA Recognition
 -----------------------------------------------
 
-The CAA parameters specified in this specification rely on their being
-recognised by the CA named by an "issue" or "issuewild" CAA property. As such,
-the parameters are not an effective means of control over issuance unless a
-CA's support for the parameters is established beforehand.
+Because the parameters of "issue" or "issuewild" CAA properties constitute a
+CA-specific namespace, the CA identified by an "issue" or "issuewild" property
+decides what parameters to recognise and their semantics. Accordingly, the CAA
+parameters defined in this specification rely on their being recognised by the
+CA named by an "issue" or "issuewild" CAA property, and are not an effective
+means of control over issuance unless a CA's support for the parameters is
+established beforehand.
 
 CAs which implement this specification SHOULD make available documentation
 indicating as such, including explicit statements as to which parameters are
@@ -336,7 +339,7 @@ parameter enables third parties to observe the authorized account URIs for a
 domain. This may allow third parties to identify a correlation between domains
 if those domains use the same account URIs.
 
-CAs MUST select and process account URIs under the assumption that
+CAs are encouraged to select and process account URIs under the assumption that
 untrusted third parties may learn of them.
 
 
