@@ -2,7 +2,7 @@
 title: CAA Record Extensions for Account URI and ACME Method Binding
 abbrev: ACME-CAA
 docname: draft-ietf-acme-caa-latest
-date: 2019-06-16
+date: 2019-06-20
 category: std
 
 ipr: trust200902
@@ -110,7 +110,7 @@ Extensions to the CAA Record: validationmethods Parameter
 
 A CAA parameter "validationmethods" is also defined for the "issue" and
 "issuewild" properties. The value of this parameter, if specified, MUST be a
-comma-separated string of validation method labels.
+comma-separated string of zero or more validation method labels.
 
 A validation method label identifies a validation method. A validation method
 is a particular way in which a CA can validate control over a domain.
